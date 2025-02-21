@@ -1,0 +1,256 @@
+---
+title: The Covariance of Covariances
+author: 
+    - name: Jan de Leeuw
+      orcid: 0000-0003-1420-1797
+      email: jan@deleeuwpdx.net
+      affiliation: 
+        - name: University of California Los Angeles
+          city: Los Angeles
+          state: CA
+          url: www.ucla.edu
+      license: "CC0"
+date: last-modified
+date-format: long
+bibliography: [mypubs.bib, total.bib]
+number-sections: true
+pdf-engine: lualatex
+keep-tex: true
+format:
+   pdf:
+    fontsize: 12pt
+    include-in-header: 
+     - preamble.tex
+    keep-tex: true
+    link-citations: true
+    documentclass: scrartcl
+    number-sections: true
+   html:
+    fontsize: 12pt
+    include-in-header: 
+     - preamble.css
+    keep-md: true
+    number-sections: true
+toc: true
+toc-depth: 3
+editor: source
+papersize: letter
+graphics: true
+link-citations: true
+mainfont: Times New Roman
+abstract: We derive the classical formula for the first and second order moments of covariance 
+  using discrete variable calculations. In addition the equally classical first order
+  asymptotics for covariances and correlations is discussed. And finally we derive an
+  exact expression for the covariances of covariances.
+---
+
+```{r loadpackages, echo = FALSE}
+suppressPackageStartupMessages(library(knitr, quietly = TRUE))
+suppressPackageStartupMessages(library(tinytex, quietly = TRUE))
+```
+
+# Note {-}
+
+This is a working manuscript which will be expanded/updated
+frequently. All suggestions for improvement are welcome. All Rmd, tex,
+html, pdf, R, and C files are in the public domain. Attribution will be
+appreciated, but is not required. The files can be found at
+<https://github.com/deleeuw/covcor> 
+
+
+# Notation {-}
+
+* We use the "Dutch Convention" of underlining random variables (@hemelrijk_66). 
+* The symbol $:=$ is used for definitions.
+
+\sectionbreak
+
+
+# Introduction
+
+Discrete, continuous. @holland_79, @gifi_B_90, @ouimet_21
+
+\ul
+Suppose we have $p$ real vectors $x_1,\cdots,x_p$ of length $m$, which we call *profiles*. Profiles are the possible outcomes of a measurement of $m$ variables, and in our framework the number of profiles is finite.
+
+Define a random vector $\ul{e}$, which takes as its values the $p$ unit vectors $e_1,\cdots,e_p$. Unit vector
+$e_r$ has all its elements equal to zero, except for element $r$, which is equal to one. 
+Define $\pi_r:=\text{prob}(\ul{e}=e_r)$. 
+
+$$
+\ul{x}=\sum_{r=1}^p\ul{e}_rx_r
+$$
+random variable $\ul{x}$ which take value $x_r$ with probability $\pi_r$.
+
+Next define the raw product moments, or product moments about zero, of order $t$ as
+$$
+\mu_{i_1\cdots i_t}:=\sum_{r=1}^p \pi_r\prod_{s=1}^tx_{ri_s},
+$$
+
+and the centered product moments, or product moments around the mean, by
+
+$$
+\sigma_{i_1\cdots i_t}:=\sum_{r=1}^p \pi_r\prod_{s=1}^t(x_{ri_s}-\mu_{i_s}).
+$$
+Note that some of the subscripts $i_1,\cdots,i_t$ can be equal
+
+Next, suppose we have $n$ independent copies  $\ul{e}_1,\cdots\ul{e}_n$ of $\ul{e}$ . 
+Suppose 
+$$
+\ul{n}=\sum_{\nu=1}^n\ul{e}_\nu\\
+\ul{p}=\frac{1}{n}\ul{n}
+$$
+are the vectors of, respectively, *frequencies* and *proportions* of the profiles. 
+the covariance of variables $i$ and $j$ as
+$$
+\ul{c}_{ij}:=\sum_\nu \ul{p}_\nu x_{\nu i}x_{\nu j}-\sum_\nu \ul{p}_\nu x_{\nu i}\sum_\eta\ul{p}_\eta x_{\eta j}
+$$
+We want to compute the expected value of the covariances $\ul{c}_{ij}$ and the covariance of pairs of
+covariances $\ul{c}_{ij}$ and $\ul{c}_{kl}$. 
+
+## Computation
+
+Let $\ul{\epsilon}_\nu:=\ul{p}_\nu-\pi_\nu$ so that 
+$$
+\mathcal{E}(\ul{\epsilon}_\nu)=0,
+$$ 
+and 
+$$
+\mathcal{E}(\ul{\epsilon}_\nu\ul{\epsilon}_\eta)=n^{-1}(\delta^{\nu\eta}\pi_\nu-\pi_\nu\pi_\eta).
+$$
+
+Now we can write
+$$
+\ul{s}_{ij}=\sigma_{ij}+\sum_\nu \ul{\epsilon}_\nu(x_{\nu i}-\mu_i)(x_{\nu j}-\mu_j)
+-\sum_\nu\sum_\eta\ul{\epsilon}_\nu\ul{\epsilon}_\eta(x_{\nu i}-\mu_i)(x_{\eta j}-\mu_j),
+$$
+with
+$$
+\sigma_{ij}=\sum_\nu\pi_\nu(x_{\nu i}-\mu_i)(x_{\nu j}-\mu_j).
+$$
+and 
+$$
+\mu_i=\sum_\nu \pi_\nu x_{\nu i}
+$$
+
+It follows that
+$$
+\mathcal{E}(\ul{c}_{ij})=\sigma_{ij}-\frac{1}{n}\sum_\nu\sum_\eta x_{\nu i}x_{\eta j}(\delta^{\nu\eta}\pi_\nu-\pi_\nu\pi_\eta)=\frac{n-1}{n}\sigma_{ij}.
+$$
+Next, define
+$$
+\ul{\delta}_{ij}:=\ul{s}_{ij}-\frac{n-1}{n}\sigma_{ij}.
+$$
+The $\ul{\delta}_{ij}$ have expectation zero, and
+$$
+\text{COV}(\ul{c}_{ij},\ul{c}_{kl})=\mathcal{E}(\ul{\delta}_{ij}\ul{\delta}_{kl}).
+$$
+We have
+\begin{subequations}
+\begin{align}
+\ul{\delta}_{ij}&=\frac{1}{n}\gamma_{ij}+\sum_\nu\ul{\epsilon}_\nu(x_{\nu i}-\mu_i)(x_{\eta j}-\mu_j)
+-\sum_\nu\sum_\eta\ul{\epsilon}_\nu\ul{\epsilon}_\eta x_{\nu i}x_{\eta j},\label{eq-expd1}\\
+\ul{\delta}_{kl}&=\frac{1}{n}\gamma_{kl}+\sum_\nu\ul{\epsilon}_\nu(x_{\nu k}-\mu_k)(x_{\eta l}-\mu_l)
+-\sum_\nu\sum_\eta\ul{\epsilon}_\nu\ul{\epsilon}_\eta x_{\nu k}x_{\eta l}.\label{eq-expd2}
+\end{align}
+\end{subequations}
+
+## Asymptotics
+
+From
+
+$$
+\mathcal{E}(\ul{\delta}_{ij}\ul{\delta}_{kl})=\frac{1}{n}\sum_\nu\sum_\eta(\delta^{\nu\eta}\pi_\nu-\pi_\nu\pi_\eta)
+\{x_{\nu i}x_{\nu j}
+-\mu_jx_{\nu i}-\mu_ix_{\nu j}\}\{x_{\eta k}x_{\eta l}
+-\mu_lx_{\eta k}-\mu_kx_{\eta l}\}=\frac{1}{n}\mu_{ijkl}-
+$$
+$$
+x_{\nu i}x_{\nu j}=(x_{\nu i}-\mu_i)(x_{\nu j}-\mu_j)+x_{\nu i}\mu_j+x_{\nu j}\mu_i-\mu_i\mu_j
+$$
+$$x_{\nu i}x_{\nu j}
+-\mu_jx_{\nu i}-\mu_ix_{\nu j}=(x_{\nu i}-\mu_i)(x_{\nu j}-\mu_j)-\mu_i\mu_j
+$$
+\begin{multline}
+\mathcal{E}(\ul{\delta}_{ij}\ul{\delta}_{kl})=\frac{1}{n}\sum_\nu\sum_\eta(\delta^{\nu\eta}\pi_\nu-\pi_\nu\pi_\eta)
+\{(x_{\nu i}-\mu_i)(x_{\nu j}-\mu_j)-\mu_i\mu_j\}\{(x_{\eta k}-\mu_k)(x_{\eta l}-\mu_l)-\mu_k\mu_l\}=\\
+\sigma_{ijkl}-\mu_k\mu_l\sigma_{ij}-\mu_i\mu_j\sigma_{kl}+\mu_i\mu_j\mu_k\mu_l-(\sigma_{ij}-\mu_i\mu_j)(\sigma_{kl}-\mu_k\mu_l)=\sigma_{ijkl}-\sigma_{ij}\sigma_{kl}
+\end{multline}
+
+### Correlations
+
+$$
+\ul{z}_{ij}=n^\frac12(\ul{s}_{ij}-\sigma_{ij})
+$$
+$$
+\ul{r}_{ij}=(\sigma_{ij}+n^{-\frac12}z_{ij})(\sigma_{ii}+n^{-\frac12}z_{ii})^{-\frac12}(\sigma_{jj}+n^{-\frac12}z_{jj})^{-\frac12}
+$$
+
+$$
+\ul{r}_{ij}=\rho_{ij}(1+n^{-\frac12}\frac{\ul{z}_{ij}}{\sigma_{ij}})(1+n^{-\frac12}\frac{\ul{z}_{ii}}{\sigma_{ii}})^{-\frac12}(1+n^{-\frac12}\frac{\ul{z}_{jj}}{\sigma_{jj}})^{-\frac12}
+$$
+
+$$
+\ul{r}_{ij}=\rho_{ij}+n^{-\frac12}\rho_{ij}\left\{\frac{\ul{z}_{ij}}{\sigma_{ij}}-\frac12\frac{\ul{z}_{ii}}{\sigma_{ii}}-\frac12\frac{\ul{z}_{jj}}{\sigma_{jj}}\right\}
+$$
+
+\begin{multline}
+n\text{ACOV}(\ul{r}_{ij},\ul{r}_{kl})=\rho_{ij}\rho_{kl}\ \large{\mathcal{E}}\left\{\frac{\ul{z}_{ij}}{\sigma_{ij}}-\frac12\frac{\ul{z}_{ii}}{\sigma_{ii}}-\frac12\frac{\ul{z}_{jj}}{\sigma_{jj}}\right\}\left\{\frac{\ul{z}_{kl}}{\sigma_{kl}}-\frac12\frac{\ul{z}_{kk}}{\sigma_{kk}}-\frac12\frac{\ul{z}_{ll}}{\sigma_{ll}}\right\}=\\
+\rho_{ij}\rho_{kl}\left\{\frac{\sigma_{ijkl}-\sigma_{ij}\sigma_{kl}}{\sigma_{ij}\sigma_{kl}}-\frac12\frac{\sigma_{ijkk}-\sigma_{ij}\sigma_{kk}}{\sigma_{ij}\sigma_{kk}}-\frac12\frac{\sigma_{ijll}-\sigma_{ij}\sigma_{ll}}{\sigma_{ij}\sigma_{ll}}\right.+\\
+-\frac12\frac{\sigma_{iikl}-\sigma_{ii}\sigma_{kl}}{\sigma_{ii}\sigma_{kl}}+\frac14\frac{\sigma_{iikk}-\sigma_{ii}\sigma_{kk}}{\sigma_{ii}\sigma_{kk}}+\frac14\frac{\sigma_{iill}-\sigma_{ii}\sigma_{ll}}{\sigma_{ii}\sigma_{ll}}+\\
+\left.-\frac12\frac{\sigma_{jjkl}-\sigma_{jj}\sigma_{kl}}{\sigma_{jj}\sigma_{kl}}+\frac14\frac{\sigma_{jjkk}-\sigma_{jj}\sigma_{kk}}{\sigma_{jj}\sigma_{kk}}+\frac14\frac{\sigma_{jjll}-\sigma_{jj}\sigma_{ll}}{\sigma_{jj}\sigma_{ll}}\right\}=\\
+\rho_{ij}\rho_{kl}\left\{\frac{\sigma_{ijkl}}{\sigma_{ij}\sigma_{kl}}
+-\frac12\left(\frac{\sigma_{ijkk}}{\sigma_{ij}\sigma_{kk}}
++\frac{\sigma_{ijll}}{\sigma_{ij}\sigma_{ll}}
++\frac{\sigma_{iikl}}{\sigma_{ii}\sigma_{kl}}
++\frac{\sigma_{jjkl}}{\sigma_{jj}\sigma_{kl}}\right)\right.\\
+\left.+\frac14\left(\frac{\sigma_{iikk}}{\sigma_{ii}\sigma_{kk}}
++\frac{\sigma_{iill}}{\sigma_{ii}\sigma_{ll}}+
++\frac{\sigma_{jjkk}}{\sigma_{jj}\sigma_{kk}}+
++\frac{\sigma_{jjll}}{\sigma_{jj}\sigma_{ll}}\right)\right\}
+\end{multline}
+
+## Exact Calculations
+
+If we multiply \eqref{eq-expd1} and \eqref{eq-expd2} we have nine terms. Taking expectations of each of these nine terms gives
+$$
+\text{term I}:\frac{1}{n^2}\gamma_{ij}\gamma_{kl}
+$$
+$$
+\text{term II}:\frac{1}{n}\gamma_{ij}\mathcal{E}(\sum_\nu\ul{\epsilon}_\nu\{x_{\nu k}x_{\nu l}
+-\mu_lx_{\nu k}-\mu_kx_{\nu l}\})=0
+$$
+$$
+\text{term III}:-\frac{1}{n}\gamma_{ij}\mathcal{E}(\sum_\nu\sum_\eta\ul{\epsilon}_\nu\ul{\epsilon}_\eta x_{\nu k}x_{\eta l})=-\frac{1}{n^2}\gamma_{ij}\gamma_{kl}
+$$
+$$
+\text{term IV}:\frac{1}{n}\gamma_{kl}\mathcal{E}(\sum_\nu\ul{\epsilon}_\nu\{x_{\nu i}x_{\nu j}
+-\mu_jx_{\nu i}-\mu_ix_{\nu j}\})=0
+$$
+$$
+\text{term V}:\frac{1}{n}\sum_\nu\sum_\eta(\delta^{\nu\eta}\pi_\nu-\pi_\nu\pi_\eta)\{x_{\nu i}x_{\nu j}
+-\mu_jx_{\nu i}-\mu_ix_{\nu j}\}\{x_{\eta k}x_{\eta l}
+-\mu_lx_{\eta k}-\mu_kx_{\eta l}\}
+$$
+
+$$
+\text{term VI}:-\sum_\alpha\sum_\nu\sum_\eta\mathcal{E}(\ul{\epsilon}_\alpha\ul{\epsilon}_\nu\ul{\epsilon}_\eta)\{x_{\alpha i}x_{\alpha j}
+-\mu_jx_{\alpha i}-\mu_ix_{\alpha j}\} x_{\nu k}x_{\eta l}
+$$
+
+$$
+\text{term VII}:-\frac{1}{n}\gamma_{kl}\sum_\nu\sum_\eta\mathcal{E}(\ul{\epsilon}_\nu\ul{\epsilon}_\eta) x_{\nu i}x_{\eta j}=-\frac{1}{n^2}\gamma_{ij}\gamma_{kl}
+$$
+$$
+\text{term VIII}:-\sum_\nu\sum_\eta\sum_\alpha\mathcal{E}(\ul{\epsilon}_\nu\ul{\epsilon}_\eta\ul{\epsilon}_\alpha)x_{\nu i}x_{\eta j}\{x_{\alpha k}x_{\alpha l}
+-\mu_lx_{\alpha k}-\mu_kx_{\alpha l}\}
+$$
+
+$$
+\text{term IX}:\sum_\nu\sum_\eta\sum_\alpha\sum_\beta\mathcal{E}(\ul{\epsilon}_\nu\ul{\epsilon}_\eta\ul{\epsilon}_\alpha\ul{\epsilon}_\beta) x_{\nu i}x_{\eta j}x_{\alpha k}x_{\beta l}
+$$
+
+\sectionbreak
+
+# References
+
