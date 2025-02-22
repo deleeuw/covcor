@@ -230,7 +230,7 @@
 
 \title{The Covariance of Covariances}
 \author{Jan de Leeuw}
-\date{February 21, 2025}
+\date{February 22, 2025}
 
 \begin{document}
 \maketitle
@@ -272,13 +272,8 @@ but is not required. The files can be found at
 
 \sectionbreak
 
-\section{Introduction}\label{introduction}
+\subsection{Data}\label{data}
 
-Discrete, continuous. Holland (\citeproc{ref-holland_79}{1979}), Gifi
-(\citeproc{ref-gifi_B_90}{1990}), Ouimet
-(\citeproc{ref-ouimet_21}{2021})
-
-\ul
 Suppose we have \(p\) real vectors \(x_1,\cdots,x_p\) of length \(m\),
 which we call \emph{profiles}. Profiles are the possible outcomes of a
 measurement of \(m\) variables, and in our framework the number of
@@ -287,19 +282,15 @@ profiles is finite.
 Define a random vector \(\ul{e}\), which takes as its values the \(p\)
 unit vectors \(e_1,\cdots,e_p\). Unit vector \(e_r\) has all its
 elements equal to zero, except for element \(r\), which is equal to one.
-Define \(\pi_r:=\text{prob}(\ul{e}=e_r)\).
-
-\[
+Define \(\pi_r:=\text{prob}(\ul{e}=e_r)\) and the random vector \[
 \ul{x}=\sum_{r=1}^p\ul{e}_rx_r
-\] random variable \(\ul{x}\) which take value \(x_r\) with probability
-\(\pi_r\).
+\] which takes the value \(x_r\) with probability \(\pi_r\).
 
 Next define the raw product moments, or product moments about zero, of
 order \(t\) as \[
 \mu_{i_1\cdots i_t}:=\sum_{r=1}^p \pi_r\prod_{s=1}^tx_{ri_s},
-\]
-
-and the centered product moments, or product moments around the mean, by
+\] and the centered product moments, or product moments around the mean,
+by
 
 \[
 \sigma_{i_1\cdots i_t}:=\sum_{r=1}^p \pi_r\prod_{s=1}^t(x_{ri_s}-\mu_{i_s}).
@@ -317,12 +308,47 @@ and \(j\) as \[
 \(\ul{c}_{ij}\) and the covariance of pairs of covariances
 \(\ul{c}_{ij}\) and \(\ul{c}_{kl}\).
 
-\subsection{Computation}\label{computation}
+\section{Exact Calculations}\label{exact-calculations}
+
+If we multiply \eqref{eq-expd1} and \eqref{eq-expd2} we have nine terms.
+Taking expectations of each of these nine terms gives \[
+\text{term I}:\frac{1}{n^2}\gamma_{ij}\gamma_{kl}
+\] \[
+\text{term II}:\frac{1}{n}\gamma_{ij}\mathbf{E}(\sum_\nu\ul{\epsilon}_\nu\{x_{\nu k}x_{\nu l}
+-\mu_lx_{\nu k}-\mu_kx_{\nu l}\})=0
+\] \[
+\text{term III}:-\frac{1}{n}\gamma_{ij}\mathbf{E}(\sum_\nu\sum_\eta\ul{\epsilon}_\nu\ul{\epsilon}_\eta x_{\nu k}x_{\eta l})=-\frac{1}{n^2}\gamma_{ij}\gamma_{kl}
+\] \[
+\text{term IV}:\frac{1}{n}\gamma_{kl}\mathbf{E}(\sum_\nu\ul{\epsilon}_\nu\{x_{\nu i}x_{\nu j}
+-\mu_jx_{\nu i}-\mu_ix_{\nu j}\})=0
+\] \[
+\text{term V}:\frac{1}{n}\sum_\nu\sum_\eta(\delta^{\nu\eta}\pi_\nu-\pi_\nu\pi_\eta)\{x_{\nu i}x_{\nu j}
+-\mu_jx_{\nu i}-\mu_ix_{\nu j}\}\{x_{\eta k}x_{\eta l}
+-\mu_lx_{\eta k}-\mu_kx_{\eta l}\}
+\]
+
+\[
+\text{term VI}:-\sum_\alpha\sum_\nu\sum_\eta\mathbf{E}(\ul{\epsilon}_\alpha\ul{\epsilon}_\nu\ul{\epsilon}_\eta)\{x_{\alpha i}x_{\alpha j}
+-\mu_jx_{\alpha i}-\mu_ix_{\alpha j}\} x_{\nu k}x_{\eta l}
+\]
+
+\[
+\text{term VII}:-\frac{1}{n}\gamma_{kl}\sum_\nu\sum_\eta\mathbf{E}(\ul{\epsilon}_\nu\ul{\epsilon}_\eta) x_{\nu i}x_{\eta j}=-\frac{1}{n^2}\gamma_{ij}\gamma_{kl}
+\] \[
+\text{term VIII}:-\sum_\nu\sum_\eta\sum_\alpha\mathbf{E}(\ul{\epsilon}_\nu\ul{\epsilon}_\eta\ul{\epsilon}_\alpha)x_{\nu i}x_{\eta j}\{x_{\alpha k}x_{\alpha l}
+-\mu_lx_{\alpha k}-\mu_kx_{\alpha l}\}
+\]
+
+\[
+\text{term IX}:\sum_\nu\sum_\eta\sum_\alpha\sum_\beta\mathbf{E}(\ul{\epsilon}_\nu\ul{\epsilon}_\eta\ul{\epsilon}_\alpha\ul{\epsilon}_\beta) x_{\nu i}x_{\eta j}x_{\alpha k}x_{\beta l}
+\]
+
+\section{Computation}\label{computation}
 
 Let \(\ul{\epsilon}_\nu:=\ul{p}_\nu-\pi_\nu\) so that \[
-\mathcal{E}(\ul{\epsilon}_\nu)=0,
+\mathbf{E}(\ul{\epsilon}_\nu)=0,
 \] and \[
-\mathcal{E}(\ul{\epsilon}_\nu\ul{\epsilon}_\eta)=n^{-1}(\delta^{\nu\eta}\pi_\nu-\pi_\nu\pi_\eta).
+\mathbf{E}(\ul{\epsilon}_\nu\ul{\epsilon}_\eta)=n^{-1}(\delta^{\nu\eta}\pi_\nu-\pi_\nu\pi_\eta).
 \]
 
 Now we can write \[
@@ -335,11 +361,11 @@ Now we can write \[
 \]
 
 It follows that \[
-\mathcal{E}(\ul{c}_{ij})=\sigma_{ij}-\frac{1}{n}\sum_\nu\sum_\eta x_{\nu i}x_{\eta j}(\delta^{\nu\eta}\pi_\nu-\pi_\nu\pi_\eta)=\frac{n-1}{n}\sigma_{ij}.
+\mathbf{E}(\ul{c}_{ij})=\sigma_{ij}-\frac{1}{n}\sum_\nu\sum_\eta x_{\nu i}x_{\eta j}(\delta^{\nu\eta}\pi_\nu-\pi_\nu\pi_\eta)=\frac{n-1}{n}\sigma_{ij}.
 \] Next, define \[
 \ul{\delta}_{ij}:=\ul{s}_{ij}-\frac{n-1}{n}\sigma_{ij}.
 \] The \(\ul{\delta}_{ij}\) have expectation zero, and \[
-\text{COV}(\ul{c}_{ij},\ul{c}_{kl})=\mathcal{E}(\ul{\delta}_{ij}\ul{\delta}_{kl}).
+\text{COV}(\ul{c}_{ij},\ul{c}_{kl})=\mathbf{E}(\ul{\delta}_{ij}\ul{\delta}_{kl}).
 \] We have \begin{subequations}
 \begin{align}
 \ul{\delta}_{ij}&=\frac{1}{n}\gamma_{ij}+\sum_\nu\ul{\epsilon}_\nu(x_{\nu i}-\mu_i)(x_{\eta j}-\mu_j)
@@ -354,7 +380,7 @@ It follows that \[
 From
 
 \[
-\mathcal{E}(\ul{\delta}_{ij}\ul{\delta}_{kl})=\frac{1}{n}\sum_\nu\sum_\eta(\delta^{\nu\eta}\pi_\nu-\pi_\nu\pi_\eta)
+\mathbf{E}(\ul{\delta}_{ij}\ul{\delta}_{kl})=\frac{1}{n}\sum_\nu\sum_\eta(\delta^{\nu\eta}\pi_\nu-\pi_\nu\pi_\eta)
 \{x_{\nu i}x_{\nu j}
 -\mu_jx_{\nu i}-\mu_ix_{\nu j}\}\{x_{\eta k}x_{\eta l}
 -\mu_lx_{\eta k}-\mu_kx_{\eta l}\}=\frac{1}{n}\mu_{ijkl}-
@@ -363,7 +389,7 @@ x_{\nu i}x_{\nu j}=(x_{\nu i}-\mu_i)(x_{\nu j}-\mu_j)+x_{\nu i}\mu_j+x_{\nu j}\m
 \] \[x_{\nu i}x_{\nu j}
 -\mu_jx_{\nu i}-\mu_ix_{\nu j}=(x_{\nu i}-\mu_i)(x_{\nu j}-\mu_j)-\mu_i\mu_j
 \] \begin{multline}
-\mathcal{E}(\ul{\delta}_{ij}\ul{\delta}_{kl})=\frac{1}{n}\sum_\nu\sum_\eta(\delta^{\nu\eta}\pi_\nu-\pi_\nu\pi_\eta)
+\mathbf{E}(\ul{\delta}_{ij}\ul{\delta}_{kl})=\frac{1}{n}\sum_\nu\sum_\eta(\delta^{\nu\eta}\pi_\nu-\pi_\nu\pi_\eta)
 \{(x_{\nu i}-\mu_i)(x_{\nu j}-\mu_j)-\mu_i\mu_j\}\{(x_{\eta k}-\mu_k)(x_{\eta l}-\mu_l)-\mu_k\mu_l\}=\\
 \sigma_{ijkl}-\mu_k\mu_l\sigma_{ij}-\mu_i\mu_j\sigma_{kl}+\mu_i\mu_j\mu_k\mu_l-(\sigma_{ij}-\mu_i\mu_j)(\sigma_{kl}-\mu_k\mu_l)=\sigma_{ijkl}-\sigma_{ij}\sigma_{kl}
 \end{multline}
@@ -385,7 +411,7 @@ x_{\nu i}x_{\nu j}=(x_{\nu i}-\mu_i)(x_{\nu j}-\mu_j)+x_{\nu i}\mu_j+x_{\nu j}\m
 \]
 
 \begin{multline}
-n\text{ACOV}(\ul{r}_{ij},\ul{r}_{kl})=\rho_{ij}\rho_{kl}\ \large{\mathcal{E}}\left\{\frac{\ul{z}_{ij}}{\sigma_{ij}}-\frac12\frac{\ul{z}_{ii}}{\sigma_{ii}}-\frac12\frac{\ul{z}_{jj}}{\sigma_{jj}}\right\}\left\{\frac{\ul{z}_{kl}}{\sigma_{kl}}-\frac12\frac{\ul{z}_{kk}}{\sigma_{kk}}-\frac12\frac{\ul{z}_{ll}}{\sigma_{ll}}\right\}=\\
+n\text{ACOV}(\ul{r}_{ij},\ul{r}_{kl})=\rho_{ij}\rho_{kl}\ \large{\mathbf{E}}\left\{\frac{\ul{z}_{ij}}{\sigma_{ij}}-\frac12\frac{\ul{z}_{ii}}{\sigma_{ii}}-\frac12\frac{\ul{z}_{jj}}{\sigma_{jj}}\right\}\left\{\frac{\ul{z}_{kl}}{\sigma_{kl}}-\frac12\frac{\ul{z}_{kk}}{\sigma_{kk}}-\frac12\frac{\ul{z}_{ll}}{\sigma_{ll}}\right\}=\\
 \rho_{ij}\rho_{kl}\left\{\frac{\sigma_{ijkl}-\sigma_{ij}\sigma_{kl}}{\sigma_{ij}\sigma_{kl}}-\frac12\frac{\sigma_{ijkk}-\sigma_{ij}\sigma_{kk}}{\sigma_{ij}\sigma_{kk}}-\frac12\frac{\sigma_{ijll}-\sigma_{ij}\sigma_{ll}}{\sigma_{ij}\sigma_{ll}}\right.+\\
 -\frac12\frac{\sigma_{iikl}-\sigma_{ii}\sigma_{kl}}{\sigma_{ii}\sigma_{kl}}+\frac14\frac{\sigma_{iikk}-\sigma_{ii}\sigma_{kk}}{\sigma_{ii}\sigma_{kk}}+\frac14\frac{\sigma_{iill}-\sigma_{ii}\sigma_{ll}}{\sigma_{ii}\sigma_{ll}}+\\
 \left.-\frac12\frac{\sigma_{jjkl}-\sigma_{jj}\sigma_{kl}}{\sigma_{jj}\sigma_{kl}}+\frac14\frac{\sigma_{jjkk}-\sigma_{jj}\sigma_{kk}}{\sigma_{jj}\sigma_{kk}}+\frac14\frac{\sigma_{jjll}-\sigma_{jj}\sigma_{ll}}{\sigma_{jj}\sigma_{ll}}\right\}=\\
@@ -400,40 +426,12 @@ n\text{ACOV}(\ul{r}_{ij},\ul{r}_{kl})=\rho_{ij}\rho_{kl}\ \large{\mathcal{E}}\le
 +\frac{\sigma_{jjll}}{\sigma_{jj}\sigma_{ll}}\right)\right\}
 \end{multline}
 
-\subsection{Exact Calculations}\label{exact-calculations}
+\section{Discussion}\label{discussion}
 
-If we multiply \eqref{eq-expd1} and \eqref{eq-expd2} we have nine terms.
-Taking expectations of each of these nine terms gives \[
-\text{term I}:\frac{1}{n^2}\gamma_{ij}\gamma_{kl}
-\] \[
-\text{term II}:\frac{1}{n}\gamma_{ij}\mathcal{E}(\sum_\nu\ul{\epsilon}_\nu\{x_{\nu k}x_{\nu l}
--\mu_lx_{\nu k}-\mu_kx_{\nu l}\})=0
-\] \[
-\text{term III}:-\frac{1}{n}\gamma_{ij}\mathcal{E}(\sum_\nu\sum_\eta\ul{\epsilon}_\nu\ul{\epsilon}_\eta x_{\nu k}x_{\eta l})=-\frac{1}{n^2}\gamma_{ij}\gamma_{kl}
-\] \[
-\text{term IV}:\frac{1}{n}\gamma_{kl}\mathcal{E}(\sum_\nu\ul{\epsilon}_\nu\{x_{\nu i}x_{\nu j}
--\mu_jx_{\nu i}-\mu_ix_{\nu j}\})=0
-\] \[
-\text{term V}:\frac{1}{n}\sum_\nu\sum_\eta(\delta^{\nu\eta}\pi_\nu-\pi_\nu\pi_\eta)\{x_{\nu i}x_{\nu j}
--\mu_jx_{\nu i}-\mu_ix_{\nu j}\}\{x_{\eta k}x_{\eta l}
--\mu_lx_{\eta k}-\mu_kx_{\eta l}\}
-\]
-
-\[
-\text{term VI}:-\sum_\alpha\sum_\nu\sum_\eta\mathcal{E}(\ul{\epsilon}_\alpha\ul{\epsilon}_\nu\ul{\epsilon}_\eta)\{x_{\alpha i}x_{\alpha j}
--\mu_jx_{\alpha i}-\mu_ix_{\alpha j}\} x_{\nu k}x_{\eta l}
-\]
-
-\[
-\text{term VII}:-\frac{1}{n}\gamma_{kl}\sum_\nu\sum_\eta\mathcal{E}(\ul{\epsilon}_\nu\ul{\epsilon}_\eta) x_{\nu i}x_{\eta j}=-\frac{1}{n^2}\gamma_{ij}\gamma_{kl}
-\] \[
-\text{term VIII}:-\sum_\nu\sum_\eta\sum_\alpha\mathcal{E}(\ul{\epsilon}_\nu\ul{\epsilon}_\eta\ul{\epsilon}_\alpha)x_{\nu i}x_{\eta j}\{x_{\alpha k}x_{\alpha l}
--\mu_lx_{\alpha k}-\mu_kx_{\alpha l}\}
-\]
-
-\[
-\text{term IX}:\sum_\nu\sum_\eta\sum_\alpha\sum_\beta\mathcal{E}(\ul{\epsilon}_\nu\ul{\epsilon}_\eta\ul{\epsilon}_\alpha\ul{\epsilon}_\beta) x_{\nu i}x_{\eta j}x_{\alpha k}x_{\beta l}
-\]
+Discrete, continuous. Random variables and realizations. Holland
+(\citeproc{ref-holland_79}{1979}), Gifi
+(\citeproc{ref-gifi_B_90}{1990}), Ouimet
+(\citeproc{ref-ouimet_21}{2021})
 
 \sectionbreak
 
