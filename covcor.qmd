@@ -49,6 +49,8 @@ suppressPackageStartupMessages(library(knitr, quietly = TRUE))
 suppressPackageStartupMessages(library(tinytex, quietly = TRUE))
 ```
 
+\sectionbreak
+
 # Note {-}
 
 This is a working manuscript which will be expanded/updated
@@ -62,11 +64,16 @@ appreciated, but is not required. The files can be found at
 
 * We use the "Dutch Convention" of underlining random variables (@hemelrijk_66). 
 * The symbol $:=$ is used for definitions.
+* A sequence $x_n$ is $o(n^{-r})$ if $n^rx_n$ converges to zero.
+* A sequence $\ul{x}_n$ of random variables is $o_p(n^{-r})$ if $n^r\ul{x}_n$ converges to zero in probability (@mann_wald_43).
 
 \sectionbreak
 
-## Data
+# Data
 
+In this paper the data are $n$ observations on $m$ discrete numerical variables. Variable
+$j$ has $k_j$ *categories* (or *levels*). Thus there are $K:=\smash{\prod_{j=1}^m}k_j$
+possible *profiles*.
 
 Suppose we have $p$ real vectors $x_1,\cdots,x_p$ of length $m$, which we call *profiles*. Profiles are the possible outcomes of a measurement of $m$ variables, and in our framework the number of profiles is finite.
 
@@ -101,47 +108,7 @@ $$
 We want to compute the expected value of the covariances $\ul{c}_{ij}$ and the covariance of pairs of
 covariances $\ul{c}_{ij}$ and $\ul{c}_{kl}$. 
 
-# Exact Calculations
-
-If we multiply \eqref{eq-expd1} and \eqref{eq-expd2} we have nine terms. Taking expectations of each of these nine terms gives
-$$
-\text{term I}:\frac{1}{n^2}\gamma_{ij}\gamma_{kl}
-$$
-$$
-\text{term II}:\frac{1}{n}\gamma_{ij}\mathbf{E}(\sum_\nu\ul{\epsilon}_\nu\{x_{\nu k}x_{\nu l}
--\mu_lx_{\nu k}-\mu_kx_{\nu l}\})=0
-$$
-$$
-\text{term III}:-\frac{1}{n}\gamma_{ij}\mathbf{E}(\sum_\nu\sum_\eta\ul{\epsilon}_\nu\ul{\epsilon}_\eta x_{\nu k}x_{\eta l})=-\frac{1}{n^2}\gamma_{ij}\gamma_{kl}
-$$
-$$
-\text{term IV}:\frac{1}{n}\gamma_{kl}\mathbf{E}(\sum_\nu\ul{\epsilon}_\nu\{x_{\nu i}x_{\nu j}
--\mu_jx_{\nu i}-\mu_ix_{\nu j}\})=0
-$$
-$$
-\text{term V}:\frac{1}{n}\sum_\nu\sum_\eta(\delta^{\nu\eta}\pi_\nu-\pi_\nu\pi_\eta)\{x_{\nu i}x_{\nu j}
--\mu_jx_{\nu i}-\mu_ix_{\nu j}\}\{x_{\eta k}x_{\eta l}
--\mu_lx_{\eta k}-\mu_kx_{\eta l}\}
-$$
-
-$$
-\text{term VI}:-\sum_\alpha\sum_\nu\sum_\eta\mathbf{E}(\ul{\epsilon}_\alpha\ul{\epsilon}_\nu\ul{\epsilon}_\eta)\{x_{\alpha i}x_{\alpha j}
--\mu_jx_{\alpha i}-\mu_ix_{\alpha j}\} x_{\nu k}x_{\eta l}
-$$
-
-$$
-\text{term VII}:-\frac{1}{n}\gamma_{kl}\sum_\nu\sum_\eta\mathbf{E}(\ul{\epsilon}_\nu\ul{\epsilon}_\eta) x_{\nu i}x_{\eta j}=-\frac{1}{n^2}\gamma_{ij}\gamma_{kl}
-$$
-$$
-\text{term VIII}:-\sum_\nu\sum_\eta\sum_\alpha\mathbf{E}(\ul{\epsilon}_\nu\ul{\epsilon}_\eta\ul{\epsilon}_\alpha)x_{\nu i}x_{\eta j}\{x_{\alpha k}x_{\alpha l}
--\mu_lx_{\alpha k}-\mu_kx_{\alpha l}\}
-$$
-
-$$
-\text{term IX}:\sum_\nu\sum_\eta\sum_\alpha\sum_\beta\mathbf{E}(\ul{\epsilon}_\nu\ul{\epsilon}_\eta\ul{\epsilon}_\alpha\ul{\epsilon}_\beta) x_{\nu i}x_{\eta j}x_{\alpha k}x_{\beta l}
-$$
-
-# Computation
+# Calculations
 
 Let $\ul{\epsilon}_\nu:=\ul{p}_\nu-\pi_\nu$ so that 
 $$
@@ -154,7 +121,7 @@ $$
 
 Now we can write
 $$
-\ul{s}_{ij}=\sigma_{ij}+\sum_\nu \ul{\epsilon}_\nu(x_{\nu i}-\mu_i)(x_{\nu j}-\mu_j)
+\ul{c}_{ij}=\sigma_{ij}+\sum_\nu \ul{\epsilon}_\nu(x_{\nu i}-\mu_i)(x_{\nu j}-\mu_j)
 -\sum_\nu\sum_\eta\ul{\epsilon}_\nu\ul{\epsilon}_\eta(x_{\nu i}-\mu_i)(x_{\eta j}-\mu_j),
 $$
 with
@@ -172,23 +139,85 @@ $$
 $$
 Next, define
 $$
-\ul{\delta}_{ij}:=\ul{s}_{ij}-\frac{n-1}{n}\sigma_{ij}.
+\ul{\delta}_{ij}:=\ul{c}_{ij}-\frac{n-1}{n}\sigma_{ij}.
 $$
 The $\ul{\delta}_{ij}$ have expectation zero, and
 $$
 \text{COV}(\ul{c}_{ij},\ul{c}_{kl})=\mathbf{E}(\ul{\delta}_{ij}\ul{\delta}_{kl}).
 $$
 We have
-\begin{subequations}
-\begin{align}
-\ul{\delta}_{ij}&=\frac{1}{n}\gamma_{ij}+\sum_\nu\ul{\epsilon}_\nu(x_{\nu i}-\mu_i)(x_{\eta j}-\mu_j)
--\sum_\nu\sum_\eta\ul{\epsilon}_\nu\ul{\epsilon}_\eta x_{\nu i}x_{\eta j},\label{eq-expd1}\\
-\ul{\delta}_{kl}&=\frac{1}{n}\gamma_{kl}+\sum_\nu\ul{\epsilon}_\nu(x_{\nu k}-\mu_k)(x_{\eta l}-\mu_l)
--\sum_\nu\sum_\eta\ul{\epsilon}_\nu\ul{\epsilon}_\eta x_{\nu k}x_{\eta l}.\label{eq-expd2}
-\end{align}
-\end{subequations}
+$$
+\ul{\delta}_{ij}=\frac{1}{n}\sigma_{ij}+\sum_\alpha\ul{\epsilon}_\alpha(x_{\alpha i}-\mu_i)(x_{\alpha j}-\mu_j)
+-\sum_\gamma\sum_\xi\ul{\epsilon}_\gamma\ul{\epsilon}_\xi(x_{\gamma i}-\mu_i)(x_{\xi j}-\mu_j),
+$$
+$$
+\ul{\delta}_{kl}=\frac{1}{n}\sigma_{kl}+\sum_\beta\ul{\epsilon}_\beta(x_{\beta k}-\mu_k)(x_{\beta l}-\mu_l)
+-\sum_\nu\sum_\eta\ul{\epsilon}_\nu\ul{\epsilon}_\eta(x_{\nu k}-\mu_k)(x_{\eta l}-\mu_l).
+$$
 
-## Asymptotics
+If we multiply \eqref{eq-expd1} and \eqref{eq-expd2} we have nine terms. Taking expectations of each of these nine terms gives
+$$
+\text{term I}:\frac{1}{n^2}\sigma_{ij}\sigma_{kl}
+$$
+$$
+\text{term II}:\frac{1}{n}\sigma_{ij}\sum_\beta\mathbf{E}(\ul{\epsilon}_\beta)(x_{\beta k}-\mu_k)(x_{\beta l}-\mu_l)=0
+$$
+$$
+\text{term III}:-\frac{1}{n}\sigma_{ij}\sum_\nu\sum_\eta\mathbf{E}(\ul{\epsilon}_\nu\ul{\epsilon}_\eta) (x_{\nu k}-\mu_k)(x_{\eta l}-\mu_l)=-\frac{1}{n^2}\sigma_{ij}\sigma_{kl}
+$$
+$$
+\text{term IV}:\frac{1}{n}\sigma_{kl}\sum_\alpha\mathbf{E}(\ul{\epsilon}_\alpha)(x_{\alpha i}-\mu_i)(x_{\alpha j}-\mu_j)=0
+$$
+$$
+\text{term V}:\sum_\alpha\sum_\beta\mathbf{E}(\ul{\epsilon}_\alpha\ul{\epsilon}_\beta)
+(x_{\alpha i}-\mu_i)(x_{\alpha j}-\mu_j)(x_{\beta k}-\mu_k)(x_{\beta l}-\mu_l)=\frac{1}{n}(\sigma_{ijkl}-\sigma_{ij}\sigma_{kl})$$
+
+$$
+\text{term VI}:-\sum_\alpha\sum_\nu\sum_\eta\mathbf{E}(\ul{\epsilon}_\alpha\ul{\epsilon}_\nu\ul{\epsilon}_\eta)(x_{\alpha i}-\mu_i)(x_{\alpha j}-\mu_j)(x_{\nu k}-\mu_k)(x_{\eta l}-\mu_l)
+$$
+
+$$
+\text{term VII}:-\frac{1}{n}\sigma_{kl}\sum_\gamma\sum_\xi\mathbf{E}(\ul{\epsilon}_\gamma\ul{\epsilon}_\xi) (x_{\gamma i}-\mu_i)(x_{\xi j}-\mu_j)=-\frac{1}{n^2}\sigma_{ij}\sigma_{kl}
+$$
+$$
+\text{term VIII}:-\sum_\beta\sum_\gamma\sum_\xi\mathbf{E}(\ul{\epsilon}_\beta\ul{\epsilon}_\gamma\ul{\epsilon}_\xi)(x_{\beta k}-\mu_k)(x_{\beta l}-\mu_l)(x_{\gamma i}-\mu_i)(x_{\xi j}-\mu_j)
+$$
+
+$$
+\text{term IX}:\sum_\nu\sum_\eta\sum_\gamma\sum_\xi\mathbf{E}(\ul{\epsilon}_\nu\ul{\epsilon}_\eta\ul{\epsilon}_\gamma\ul{\epsilon}_\xi)(x_{\nu i}-\mu_i)(x_{\eta j}-\mu_j)(x_{\gamma k}-\mu_k)(x_{\xi l}-\mu_l)
+$$
+
+From @ouimet_21
+$$\mathbf{E}(\ul{\epsilon}_\alpha\ul{\epsilon}_\nu\ul{\epsilon}_\eta)=\frac{1}{n^2}
+\{2\pi_\alpha\pi_\nu\pi_\eta
+-\delta^{\alpha\nu}\pi_\alpha\pi_\eta
+-\delta^{\nu\eta}\pi_\alpha\pi_\nu
+-\delta^{\alpha\eta}\pi_\nu\pi_\eta
++\delta^{\alpha\nu\eta}\pi_\alpha\}.
+$$
+We can now evaluate term VI and term VIII.
+$$
+2\sum_\alpha\sum_\nu\sum_\eta\pi_\alpha\pi_\nu\pi_\eta
+(x_{\alpha i}-\mu_i)(x_{\alpha j}-\mu_j)(x_{\nu k}-\mu_k)(x_{\eta l}-\mu_l)=0
+$$
+$$
+-\sum_\alpha\sum_\eta\pi_\alpha\pi_\eta(x_{\alpha i}-\mu_i)(x_{\alpha j}-\mu_j)(x_{\alpha k}-\mu_k)(x_{\eta l}-\mu_l)=0
+$$
+$$
+-\sum_\alpha\sum_\nu
+\pi_\alpha\pi_\nu
+(x_{\alpha i}-\mu_i)(x_{\alpha j}-\mu_j)(x_{\nu k}-\mu_k)(x_{\nu l}-\mu_l)=-\sigma_{ij}\sigma_{kl}
+$$
+$$
+-\sum_\alpha\sum_\nu
+\pi_\alpha\pi_\nu(x_{\alpha i}-\mu_i)(x_{\alpha j}-\mu_j)(x_{\nu k}-\mu_k)(x_{\nu l}-\mu_l)=-\sigma_{ij}\sigma_{kl}
+$$
+$$
++\sum_\alpha
+\pi_\alpha(x_{\alpha i}-\mu_i)(x_{\alpha j}-\mu_j)(x_{\alpha k}-\mu_k)(x_{\alpha l}-\mu_l)=\sigma_{ijkl}
+$$
+
+# Asymptotics
 
 From
 
@@ -210,28 +239,22 @@ $$
 \sigma_{ijkl}-\mu_k\mu_l\sigma_{ij}-\mu_i\mu_j\sigma_{kl}+\mu_i\mu_j\mu_k\mu_l-(\sigma_{ij}-\mu_i\mu_j)(\sigma_{kl}-\mu_k\mu_l)=\sigma_{ijkl}-\sigma_{ij}\sigma_{kl}
 \end{multline}
 
-### Correlations
-
+If we define
 $$
-\ul{z}_{ij}=n^\frac12(\ul{s}_{ij}-\sigma_{ij})
+\ul{z}_{ij}:=n^\frac12(\ul{s}_{ij}-\sigma_{ij})
 $$
+we have
 $$
-\ul{r}_{ij}=(\sigma_{ij}+n^{-\frac12}z_{ij})(\sigma_{ii}+n^{-\frac12}z_{ii})^{-\frac12}(\sigma_{jj}+n^{-\frac12}z_{jj})^{-\frac12}
-$$
-
-$$
-\ul{r}_{ij}=\rho_{ij}(1+n^{-\frac12}\frac{\ul{z}_{ij}}{\sigma_{ij}})(1+n^{-\frac12}\frac{\ul{z}_{ii}}{\sigma_{ii}})^{-\frac12}(1+n^{-\frac12}\frac{\ul{z}_{jj}}{\sigma_{jj}})^{-\frac12}
+\ul{r}_{ij}=(\sigma_{ij}+n^{-\frac12}z_{ij})(\sigma_{ii}+n^{-\frac12}z_{ii})^{-\frac12}(\sigma_{jj}+n^{-\frac12}z_{jj})^{-\frac12},
 $$
 
+which implies
 $$
-\ul{r}_{ij}=\rho_{ij}+n^{-\frac12}\rho_{ij}\left\{\frac{\ul{z}_{ij}}{\sigma_{ij}}-\frac12\frac{\ul{z}_{ii}}{\sigma_{ii}}-\frac12\frac{\ul{z}_{jj}}{\sigma_{jj}}\right\}
+\ul{r}_{ij}=\rho_{ij}+n^{-\frac12}\rho_{ij}\left\{\frac{\ul{z}_{ij}}{\sigma_{ij}}-\frac12\frac{\ul{z}_{ii}}{\sigma_{ii}}-\frac12\frac{\ul{z}_{jj}}{\sigma_{jj}}\right\}+o_p(n^{-\frac12}).
 $$
-
+Multiplying ... for $\ul{r}_{ij}$ and $\ul{r}_{kl}$ and simplifying gives
 \begin{multline}
-n\text{ACOV}(\ul{r}_{ij},\ul{r}_{kl})=\rho_{ij}\rho_{kl}\ \large{\mathbf{E}}\left\{\frac{\ul{z}_{ij}}{\sigma_{ij}}-\frac12\frac{\ul{z}_{ii}}{\sigma_{ii}}-\frac12\frac{\ul{z}_{jj}}{\sigma_{jj}}\right\}\left\{\frac{\ul{z}_{kl}}{\sigma_{kl}}-\frac12\frac{\ul{z}_{kk}}{\sigma_{kk}}-\frac12\frac{\ul{z}_{ll}}{\sigma_{ll}}\right\}=\\
-\rho_{ij}\rho_{kl}\left\{\frac{\sigma_{ijkl}-\sigma_{ij}\sigma_{kl}}{\sigma_{ij}\sigma_{kl}}-\frac12\frac{\sigma_{ijkk}-\sigma_{ij}\sigma_{kk}}{\sigma_{ij}\sigma_{kk}}-\frac12\frac{\sigma_{ijll}-\sigma_{ij}\sigma_{ll}}{\sigma_{ij}\sigma_{ll}}\right.+\\
--\frac12\frac{\sigma_{iikl}-\sigma_{ii}\sigma_{kl}}{\sigma_{ii}\sigma_{kl}}+\frac14\frac{\sigma_{iikk}-\sigma_{ii}\sigma_{kk}}{\sigma_{ii}\sigma_{kk}}+\frac14\frac{\sigma_{iill}-\sigma_{ii}\sigma_{ll}}{\sigma_{ii}\sigma_{ll}}+\\
-\left.-\frac12\frac{\sigma_{jjkl}-\sigma_{jj}\sigma_{kl}}{\sigma_{jj}\sigma_{kl}}+\frac14\frac{\sigma_{jjkk}-\sigma_{jj}\sigma_{kk}}{\sigma_{jj}\sigma_{kk}}+\frac14\frac{\sigma_{jjll}-\sigma_{jj}\sigma_{ll}}{\sigma_{jj}\sigma_{ll}}\right\}=\\
+n\text{COV}(\ul{r}_{ij},\ul{r}_{kl})=
 \rho_{ij}\rho_{kl}\left\{\frac{\sigma_{ijkl}}{\sigma_{ij}\sigma_{kl}}
 -\frac12\left(\frac{\sigma_{ijkk}}{\sigma_{ij}\sigma_{kk}}
 +\frac{\sigma_{ijll}}{\sigma_{ij}\sigma_{ll}}
@@ -240,8 +263,21 @@ n\text{ACOV}(\ul{r}_{ij},\ul{r}_{kl})=\rho_{ij}\rho_{kl}\ \large{\mathbf{E}}\lef
 \left.+\frac14\left(\frac{\sigma_{iikk}}{\sigma_{ii}\sigma_{kk}}
 +\frac{\sigma_{iill}}{\sigma_{ii}\sigma_{ll}}+
 +\frac{\sigma_{jjkk}}{\sigma_{jj}\sigma_{kk}}+
-+\frac{\sigma_{jjll}}{\sigma_{jj}\sigma_{ll}}\right)\right\}
++\frac{\sigma_{jjll}}{\sigma_{jj}\sigma_{ll}}\right)\right\}.\label{eq-covr}
 \end{multline}
+A further simplification is possible by defining
+\begin{equation}
+\rho_{ijkl}:=\frac{\sigma_{ijkl}}{\sqrt{\sigma_{ii}\sigma_{jj}\sigma_{kk}\sigma_{ll}}}.
+\label{eq-normcor}
+\end{equation}
+Equation \eqref{eq-covr} becomes
+\begin{align}
+n\text{COV}(\ul{r}_{ij},\ul{r}_{kl})=\rho_{ijkl}&-\frac12\rho_{kl}(\rho_{ijkk}+\rho_{ijll})-\frac12
+\rho_{ij}(\rho_{iikl}+\rho_{jjkl})\notag\\&+\frac14\rho_{ij}\rho_{kl}(\rho_{iikk}+\rho_{iill}+\rho_{jjkk}+\rho_{jjll}).\label{eq-ihsh}
+\end{align}
+Equation \eqref{eq-ihsh} has been rediscovered every 33 years by successive generations of statisticians (@isserlis_16, @hsu_49, @steiger_hakstian_82).
+
+\sectionbreak
 
 # Discussion
 
