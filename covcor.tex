@@ -230,7 +230,7 @@
 
 \title{The Covariance of Covariances}
 \author{Jan de Leeuw}
-\date{February 23, 2025}
+\date{March 3, 2025}
 
 \begin{document}
 \maketitle
@@ -321,117 +321,188 @@ and \(j\) as \[
 \(\ul{c}_{ij}\) and the covariance of pairs of covariances
 \(\ul{c}_{ij}\) and \(\ul{c}_{kl}\).
 
+\sectionbreak
+
 \section{Calculations}\label{calculations}
 
-Let \(\ul{\epsilon}_\nu:=\ul{p}_\nu-\pi_\nu\) so that \[
-\mathbf{E}(\ul{\epsilon}_\nu)=0,
-\] and \[
-\mathbf{E}(\ul{\epsilon}_\nu\ul{\epsilon}_\eta)=n^{-1}(\delta^{\nu\eta}\pi_\nu-\pi_\nu\pi_\eta).
-\]
+The covariance is a quadratic function of multinomial frequencies.
+\begin{equation}
+\ul{c}_{ij}=\frac{1}{n}\sum_{\nu=1}^m\ul{n}_\nu x_{\nu i}x_{\nu j}-\frac{1}{n^2}\sum_{\alpha=1}^m\sum_{\beta=1}^m\ul{n}_\alpha\ul{n}_\beta x_{\alpha i}x_{\beta j}.\label{eq-covfreq}
+\end{equation} Thus the product of two covariances is a quartic function
+of multinomial frequencies.
 
-Now we can write \[
-\ul{c}_{ij}=\sigma_{ij}+\sum_\nu \ul{\epsilon}_\nu(x_{\nu i}-\mu_i)(x_{\nu j}-\mu_j)
--\sum_\nu\sum_\eta\ul{\epsilon}_\nu\ul{\epsilon}_\eta(x_{\nu i}-\mu_i)(x_{\eta j}-\mu_j),
-\] with \[
-\sigma_{ij}=\sum_\nu\pi_\nu(x_{\nu i}-\mu_i)(x_{\nu j}-\mu_j).
-\] and \[
-\mu_i=\sum_\nu \pi_\nu x_{\nu i}
-\]
+\subsection{Multinomial Product
+Moments}\label{multinomial-product-moments}
 
-It follows that \[
-\mathbf{E}(\ul{c}_{ij})=\sigma_{ij}-\frac{1}{n}\sum_\nu\sum_\eta x_{\nu i}x_{\eta j}(\delta^{\nu\eta}\pi_\nu-\pi_\nu\pi_\eta)=\frac{n-1}{n}\sigma_{ij}.
-\] Next, define \[
-\ul{\delta}_{ij}:=\ul{c}_{ij}-\frac{n-1}{n}\sigma_{ij}.
-\] The \(\ul{\delta}_{ij}\) have expectation zero, and \[
-\text{COV}(\ul{c}_{ij},\ul{c}_{kl})=\mathbf{E}(\ul{\delta}_{ij}\ul{\delta}_{kl}).
-\] We have \[
-\ul{\delta}_{ij}=\frac{1}{n}\sigma_{ij}+\sum_\alpha\ul{\epsilon}_\alpha(x_{\alpha i}-\mu_i)(x_{\alpha j}-\mu_j)
--\sum_\gamma\sum_\xi\ul{\epsilon}_\gamma\ul{\epsilon}_\xi(x_{\gamma i}-\mu_i)(x_{\xi j}-\mu_j),
-\] \[
-\ul{\delta}_{kl}=\frac{1}{n}\sigma_{kl}+\sum_\beta\ul{\epsilon}_\beta(x_{\beta k}-\mu_k)(x_{\beta l}-\mu_l)
--\sum_\nu\sum_\eta\ul{\epsilon}_\nu\ul{\epsilon}_\eta(x_{\nu k}-\mu_k)(x_{\eta l}-\mu_l).
-\]
+In order to compute expectations we need the moments and product moments
+of multinomial vectors. They have been computed recently by Newcomer,
+Neerchal, and Morel (\citeproc{ref-newcomer_neerchal_morel_08}{2008}),
+Ouimet (\citeproc{ref-ouimet_20}{2020}), and Ouimet
+(\citeproc{ref-ouimet_21}{2021}). Newcomer, Neerchal, and Morel
+(\citeproc{ref-newcomer_neerchal_morel_08}{2008}) give the raw moments
+up to order four, Ouimet (\citeproc{ref-ouimet_20}{2020}) gives raw and
+central moments up to order four, and Ouimet
+(\citeproc{ref-ouimet_21}{2021}) gives raw and central moments up to
+order eight. We shall derive slightly different, but equivalent,
+expressions, using Kronecker deltas and emphasizing the symmetry of the
+moments. Our basic tool is the moment generating function of the
+multinomial distribution and its partial derivatives. We give some of
+the intermediate calculations, not just the final results.
 
-If we multiply \eqref{eq-expd1} and \eqref{eq-expd2} we have nine terms.
-Taking expectations of each of these nine terms gives \[
-\text{term I}:\frac{1}{n^2}\sigma_{ij}\sigma_{kl}
-\] \[
-\text{term II}:\frac{1}{n}\sigma_{ij}\sum_\beta\mathbf{E}(\ul{\epsilon}_\beta)(x_{\beta k}-\mu_k)(x_{\beta l}-\mu_l)=0
-\] \[
-\text{term III}:-\frac{1}{n}\sigma_{ij}\sum_\nu\sum_\eta\mathbf{E}(\ul{\epsilon}_\nu\ul{\epsilon}_\eta) (x_{\nu k}-\mu_k)(x_{\eta l}-\mu_l)=-\frac{1}{n^2}\sigma_{ij}\sigma_{kl}
-\] \[
-\text{term IV}:\frac{1}{n}\sigma_{kl}\sum_\alpha\mathbf{E}(\ul{\epsilon}_\alpha)(x_{\alpha i}-\mu_i)(x_{\alpha j}-\mu_j)=0
-\] \[
-\text{term V}:\sum_\alpha\sum_\beta\mathbf{E}(\ul{\epsilon}_\alpha\ul{\epsilon}_\beta)
-(x_{\alpha i}-\mu_i)(x_{\alpha j}-\mu_j)(x_{\beta k}-\mu_k)(x_{\beta l}-\mu_l)=\frac{1}{n}(\sigma_{ijkl}-\sigma_{ij}\sigma_{kl})\]
+The moment generating function of the multinomial distribution is
+\begin{equation}
+M(t)=\left[\sum_{\nu=1}^m\pi_\nu\exp(t_\nu)\right]^n,\label{eq-mgf}
+\end{equation} It is convenient to define, for \(k=0,2,\cdots,n\),
+\begin{equation}
+n^{(k)}:=\frac{n!}{(n-k)!}=n(n-1)\cdots(n-k+1).\label{eq-nk}
+\end{equation} Note \(n^{(0)}=1\), \(n^{(1)}=n\) and \(n^{(n)}=n!\). We
+will also use the shorthand \[
+\tau_\nu(t):=\pi_\nu\exp(t_\nu),
+\] and \begin{equation}
+S(t):=\sum_{\nu=1}^m\tau_\nu(t)).\label{eq-ds}
+\end{equation} Note that \(S(0)=1\) and \(\tau_\nu(0)=\pi_\nu\). Also
+\(\mathcal{D}_\eta\tau_\nu(t)=\delta^{\nu\eta}\tau_\nu(t)\) and
+\(\mathcal{D}_\nu S(t)=\tau_\nu(t)\).
 
-\[
-\text{term VI}:-\sum_\alpha\sum_\nu\sum_\eta\mathbf{E}(\ul{\epsilon}_\alpha\ul{\epsilon}_\nu\ul{\epsilon}_\eta)(x_{\alpha i}-\mu_i)(x_{\alpha j}-\mu_j)(x_{\nu k}-\mu_k)(x_{\eta l}-\mu_l)
-\]
+\subsubsection{First Order Moments}\label{first-order-moments}
 
-\[
-\text{term VII}:-\frac{1}{n}\sigma_{kl}\sum_\gamma\sum_\xi\mathbf{E}(\ul{\epsilon}_\gamma\ul{\epsilon}_\xi) (x_{\gamma i}-\mu_i)(x_{\xi j}-\mu_j)=-\frac{1}{n^2}\sigma_{ij}\sigma_{kl}
-\] \[
-\text{term VIII}:-\sum_\beta\sum_\gamma\sum_\xi\mathbf{E}(\ul{\epsilon}_\beta\ul{\epsilon}_\gamma\ul{\epsilon}_\xi)(x_{\beta k}-\mu_k)(x_{\beta l}-\mu_l)(x_{\gamma i}-\mu_i)(x_{\xi j}-\mu_j)
-\]
+The first derivative is \begin{equation}
+\mathcal{D}_\alpha M(t)=nS(t)^{n-1}\tau_\alpha(t),\label{eq-d1}
+\end{equation} and thus
+\(\mathbf{E}(\ul{n}_\alpha)=\mathcal{D}_\alpha M(0)=n\pi_\alpha\).
 
-\[
-\text{term IX}:\sum_\nu\sum_\eta\sum_\gamma\sum_\xi\mathbf{E}(\ul{\epsilon}_\nu\ul{\epsilon}_\eta\ul{\epsilon}_\gamma\ul{\epsilon}_\xi)(x_{\nu i}-\mu_i)(x_{\eta j}-\mu_j)(x_{\gamma k}-\mu_k)(x_{\xi l}-\mu_l)
-\]
+\subsubsection{Second Order Moments}\label{second-order-moments}
 
-From Ouimet (\citeproc{ref-ouimet_21}{2021})
-\[\mathbf{E}(\ul{\epsilon}_\alpha\ul{\epsilon}_\nu\ul{\epsilon}_\eta)=\frac{1}{n^2}
-\{2\pi_\alpha\pi_\nu\pi_\eta
--\delta^{\alpha\nu}\pi_\alpha\pi_\eta
--\delta^{\nu\eta}\pi_\alpha\pi_\nu
--\delta^{\alpha\eta}\pi_\nu\pi_\eta
-+\delta^{\alpha\nu\eta}\pi_\alpha\}.
-\] We can now evaluate term VI and term VIII. \[
-2\sum_\alpha\sum_\nu\sum_\eta\pi_\alpha\pi_\nu\pi_\eta
-(x_{\alpha i}-\mu_i)(x_{\alpha j}-\mu_j)(x_{\nu k}-\mu_k)(x_{\eta l}-\mu_l)=0
-\] \[
--\sum_\alpha\sum_\eta\pi_\alpha\pi_\eta(x_{\alpha i}-\mu_i)(x_{\alpha j}-\mu_j)(x_{\alpha k}-\mu_k)(x_{\eta l}-\mu_l)=0
-\] \[
--\sum_\alpha\sum_\nu
-\pi_\alpha\pi_\nu
-(x_{\alpha i}-\mu_i)(x_{\alpha j}-\mu_j)(x_{\nu k}-\mu_k)(x_{\nu l}-\mu_l)=-\sigma_{ij}\sigma_{kl}
-\] \[
--\sum_\alpha\sum_\nu
-\pi_\alpha\pi_\nu(x_{\alpha i}-\mu_i)(x_{\alpha j}-\mu_j)(x_{\nu k}-\mu_k)(x_{\nu l}-\mu_l)=-\sigma_{ij}\sigma_{kl}
-\] \[
-+\sum_\alpha
-\pi_\alpha(x_{\alpha i}-\mu_i)(x_{\alpha j}-\mu_j)(x_{\alpha k}-\mu_k)(x_{\alpha l}-\mu_l)=\sigma_{ijkl}
-\]
+The second derivative is \begin{equation}
+\mathcal{D}_{\alpha\beta}M(t)=n^{(2)}S(t)^{n-2}\tau_\alpha(t)\tau_\beta(t)+nS(t)^{n-1}\delta^{\alpha\beta}\tau_\alpha(t),\label{eq-d2}
+\end{equation} and thus \begin{equation}
+\mathbf{E}(\ul{n}_\alpha\ul{n}_\beta)=\mathcal{D}_{\alpha\beta}M(0)=n^{(2)}\pi_\alpha\pi_\beta+n\delta^{\alpha\beta}\pi_\alpha.\label{eq-enab}
+\end{equation}
 
-\section{Asymptotics}\label{asymptotics}
+\subsubsection{Third Order Moments}\label{third-order-moments}
 
-From
+Moments of order three are next. Differentiate \eqref{eq-d2} with repect
+to \(t_\gamma\) to get \begin{subequations}
+\begin{align}
+\mathcal{D}_{\alpha\beta\gamma}M(t)&=n^{(3)}S(t)^{n-3}\tau_\alpha(t)\tau_\beta(t)\tau_\gamma(t)\label{eq-d3a}\\
+&+n^{(2)}S(t)^{n-2}\{\delta^{\alpha\gamma}\tau_\beta(t)\tau_\gamma(t)+\delta^{\beta\gamma}\tau_\alpha(t)\tau_\gamma(t)+\delta^{\alpha\beta}\tau_\alpha(t)\tau_\gamma(t)\}\label{eq-d3b}\\
+&+nS(t)^{n-1}\delta^{\alpha\beta\gamma}\tau_\gamma(t)\label{eq-d3c}.
+\end{align}
+\end{subequations}\\
+Thus \begin{equation}
+\mathbf{E}(\ul{n}_\alpha\ul{n}_\beta\ul{n}_\gamma)=\\n^{(3)}\pi_\alpha\pi_\beta\pi_\gamma+n^{(2)}\{\delta^{\alpha\gamma}\pi_\beta\pi_\gamma+\delta^{\beta\gamma}\pi_\alpha\pi_\gamma+\delta^{\alpha\beta}\pi_\alpha\pi_\gamma\}+n\delta^{\alpha\beta\gamma}\pi_\gamma.\label{eq-enabg}
+\end{equation}
 
-\[
-\mathbf{E}(\ul{\delta}_{ij}\ul{\delta}_{kl})=\frac{1}{n}\sum_\nu\sum_\eta(\delta^{\nu\eta}\pi_\nu-\pi_\nu\pi_\eta)
-\{x_{\nu i}x_{\nu j}
--\mu_jx_{\nu i}-\mu_ix_{\nu j}\}\{x_{\eta k}x_{\eta l}
--\mu_lx_{\eta k}-\mu_kx_{\eta l}\}=\frac{1}{n}\mu_{ijkl}-
-\] \[
-x_{\nu i}x_{\nu j}=(x_{\nu i}-\mu_i)(x_{\nu j}-\mu_j)+x_{\nu i}\mu_j+x_{\nu j}\mu_i-\mu_i\mu_j
-\] \[x_{\nu i}x_{\nu j}
--\mu_jx_{\nu i}-\mu_ix_{\nu j}=(x_{\nu i}-\mu_i)(x_{\nu j}-\mu_j)-\mu_i\mu_j
-\] \begin{multline}
-\mathbf{E}(\ul{\delta}_{ij}\ul{\delta}_{kl})=\frac{1}{n}\sum_\nu\sum_\eta(\delta^{\nu\eta}\pi_\nu-\pi_\nu\pi_\eta)
-\{(x_{\nu i}-\mu_i)(x_{\nu j}-\mu_j)-\mu_i\mu_j\}\{(x_{\eta k}-\mu_k)(x_{\eta l}-\mu_l)-\mu_k\mu_l\}=\\
-\sigma_{ijkl}-\mu_k\mu_l\sigma_{ij}-\mu_i\mu_j\sigma_{kl}+\mu_i\mu_j\mu_k\mu_l-(\sigma_{ij}-\mu_i\mu_j)(\sigma_{kl}-\mu_k\mu_l)=\sigma_{ijkl}-\sigma_{ij}\sigma_{kl}
+We check \eqref{eq-enabg} against the formulas given by Newcomer,
+Neerchal, and Morel (\citeproc{ref-newcomer_neerchal_morel_08}{2008}).
+If \(\alpha, \beta, \gamma\) are all different, we have
+\(\delta^{\alpha\gamma}=\delta^{\beta\gamma}=\delta^{\alpha\beta}=\delta^{\alpha\beta\gamma}=0\)
+and thus \eqref{eq-enabg} reduces to \begin{subequations}
+\begin{equation}
+\mathbf{E}(\ul{n}_\alpha\ul{n}_\beta\ul{n}_\gamma)=n^{(3)}\pi_\alpha\pi_\beta\pi_\gamma.
+\label{eq-newc31}\end{equation}
+If $\beta=\alpha$ and $\gamma\not=\alpha$ then $\delta^{\alpha\gamma}=\delta^{\alpha\beta}=\delta^{\alpha\beta\gamma}=0$ and $\delta^{\beta\gamma}=1$, so \eqref{eq-enabg} reduces to
+\begin{equation}
+\mathbf{E}(\ul{n}_\alpha^2\ul{n}_\gamma)=n^{(3)}\pi_\alpha^2\pi_\gamma+n^{(2)}\pi_\alpha\pi_\gamma.
+\label{eq-newc32}\end{equation}
+If $\beta=\alpha$ and $\gamma=\alpha$ then $\delta^{\alpha\gamma}=\delta^{\beta\gamma}=\delta^{\alpha\beta}=\delta^{\alpha\beta\gamma}=1$, so \eqref{eq-enabg} reduces to
+\begin{equation}
+\mathbf{E}(\ul{n}_\alpha^3)=n^{(3)}\pi_\alpha^3+3n^{(2)}\pi_\alpha^2+n\pi_\alpha.
+\label{eq-newc33}\end{equation}
+\end{subequations} And \eqref{eq-newc31}-\eqref{eq-newc33} are indeed
+the formulas given by Newcomer, Neerchal, and Morel
+(\citeproc{ref-newcomer_neerchal_morel_08}{2008}).
+
+\subsubsection{Fourth Order Moments}\label{fourth-order-moments}
+
+We will compute the fourth partials in steps. Differentiating
+\eqref{eq-d3a} gives \begin{multline}
+n^{(4)}S(t)^{n-4}\tau_\alpha(t)\tau_\beta(t)\tau_\gamma(t)\tau_\delta(t)\\
++n^{(3)}S(t)^{n-3}\left\{\delta^{\gamma\delta}\tau_\alpha(t)\tau_\beta(t)\tau_\delta(t)+\delta^{\beta\delta}\tau_\alpha(t)\tau_\gamma(t)\tau_\delta(t)+\delta^{\alpha\delta}\tau_\beta(t)\tau_\gamma(t)\tau_\delta(t)\right\}.
+\end{multline} For \(t=0\) this is \begin{equation}
+n^{(4)}\pi_\alpha\pi_\beta\pi_\gamma\pi_\delta+n^{(3)}\{\delta^{\gamma\delta}\pi_\alpha\pi_\beta\pi_\delta+\delta^{\beta\delta}\pi_\alpha\pi_\gamma\pi_\delta+\delta^{\alpha\delta}\pi_\beta\pi_\gamma\pi_\delta\}.\label{eq-d4a}
+\end{equation} Differentiating \eqref{eq-d3b} gives \begin{multline}
+n^{(3)}S(t)^{n-3}\tau_\delta(t)\{\delta^{\alpha\gamma}\tau_\beta(t)\tau_\gamma(t)+\delta^{\beta\gamma}\tau_\alpha(t)\tau_\gamma(t)+\delta^{\alpha\beta}\tau_\alpha(t)\tau_\gamma(t)\}\\
++n^{(2)}S(t)^{n-2}\{
+\delta^{\alpha\gamma}\delta^{\gamma\delta}\tau_\beta(t)\tau_\gamma(t)+
+\delta^{\alpha\gamma}\delta^{\beta\delta}\tau_\beta(t)\tau_\gamma(t)+
+\delta^{\beta\gamma}\delta^{\alpha\delta}\tau_\alpha(t)\tau_\gamma(t)+\\
+\delta^{\beta\gamma}\delta^{\gamma\delta}\tau_\alpha(t)\tau_\gamma(t)+
+\delta^{\alpha\beta}\delta^{\alpha\delta}\tau_\alpha(t)\tau_\gamma(t)+
+\delta^{\alpha\beta}\delta^{\gamma\delta}\tau_\alpha(t)\tau_\gamma(t)\}.
+\}
+\end{multline} For \(t=0\) this is \begin{multline}
+n^{(3)}\pi_\delta\{\delta^{\alpha\gamma}\pi_\beta\pi_\gamma+\delta^{\beta\gamma}\pi_\alpha\pi_\gamma+\delta^{\alpha\beta}\pi_\alpha\pi_\gamma\}\\
++n^{(2)}\{
+\delta^{\alpha\gamma}\delta^{\gamma\delta}\pi_\beta\pi_\gamma+
+\delta^{\alpha\gamma}\delta^{\beta\delta}\pi_\beta\pi_\gamma+
+\delta^{\beta\gamma}\delta^{\alpha\delta}\pi_\alpha\pi_\gamma+\\
+\delta^{\beta\gamma}\delta^{\gamma\delta}\pi_\alpha\pi_\gamma+
+\delta^{\alpha\beta}\delta^{\alpha\delta}\pi_\alpha\pi_\gamma+
+\delta^{\alpha\beta}\delta^{\gamma\delta}\pi_\alpha\pi_\gamma\}.
 \end{multline}
 
-If we define \[
-\ul{z}_{ij}:=n^\frac12(\ul{s}_{ij}-\sigma_{ij})
-\] we have \[
-\ul{r}_{ij}=(\sigma_{ij}+n^{-\frac12}z_{ij})(\sigma_{ii}+n^{-\frac12}z_{ii})^{-\frac12}(\sigma_{jj}+n^{-\frac12}z_{jj})^{-\frac12},
+Differentiating \eqref{eq-d3c} gives \begin{equation}
+n^{(2)}S(t)^{n-2}\delta^{\alpha\beta\gamma}\tau_\delta(t)+nS(t)^{n-1}\delta^{\alpha\beta\gamma\delta}.\label{eq-d4c}
+\end{equation} For \(t=0\) this is \begin{equation}
+n^{(2)}\delta^{\alpha\beta\gamma}\pi_\delta+n\delta^{\alpha\beta\gamma\delta}.\label{eq-d5c}
+\end{equation}
+
+\subsection{Covariance of Covariances}\label{covariance-of-covariances}
+
+Then \begin{equation}
+\mathbf{E}(\ul{c}_{ij})=\frac{1}{n}\sum_{\nu=1}^m\mathbf{E}(\ul{n}_\nu) x_{\nu i}x_{\nu j}-\frac{1}{n^2}\sum_{\alpha=1}^m\sum_{\beta=1}^m\mathbf{E}(\ul{n}_\alpha\ul{n}_\beta) x_{\alpha i}x_{\beta j}.\label{eq-ecov}
+\end{equation} Now \(\mathbf{E}(\ul{n}_\nu)=n\pi_\nu\) and
+\(\mathbf{E}(\ul{n}_\alpha\ul{n}_\beta)=n^{(2)}\pi_\alpha\pi_\beta+n\delta^{\alpha\beta}\pi_\alpha\).
+Thus \begin{equation}
+\mathbf{E}(\ul{c}_{ij})=\frac{n-1}{n}(\mu_{ij}-\mu_i\mu_j)=\frac{n-1}{n}\sigma_{ij}.
+\label{eq-ecov2}
+\end{equation}
+
+Next we compute the covariance of covariances. We have \begin{equation}
+\ul{c}_{kl}=\frac{1}{n}\sum_{\eta=1}^m\ul{n}_\eta x_{\eta k}x_{\eta l}-\frac{1}{n^2}\sum_{\gamma=1}^m\sum_{\delta=1}^m\ul{n}_\gamma\ul{n}_\delta x_{\gamma k}x_{\delta l}.
+\end{equation} \begin{align}
+\mathbf{E}(\ul{c}_{ij}\ul{c}_{kl})=&\frac{1}{n^2}\sum_{\nu=1}^m\sum_{\eta=1}^m\mathbf{E}(\ul{n}_\nu \ul{n}_\eta) x_{\nu i}x_{\nu j}x_{\eta k}x_{\eta l}\\
+-&\frac{1}{n^3}\sum_{\nu=1}^m\sum_{\gamma=1}^m\sum_{\delta=1}^m\mathbf{E}(\ul{n}_\nu \ul{n}_\gamma\ul{n}_\delta)x_{\nu i}x_{\nu j}x_{\gamma k}x_{\delta l}\\
+-&\frac{1}{n^3}\sum_{\eta=1}^m\sum_{\alpha=1}^m\sum_{\beta=1}^m\mathbf{E}(\ul{n}_\eta \ul{n}_\alpha\ul{n}_\beta)x_{\eta k}x_{\eta l}x_{\alpha i}x_{\beta j}\\
++&\frac{1}{n^4}\sum_{\alpha=1}^m\sum_{\beta=1}^m\sum_{\gamma=1}^m\sum_{\delta=1}^m\mathbf{E}(\ul{n}_\alpha\ul{n}_\beta\ul{n}_\alpha\ul{n}_\beta) x_{\alpha i}x_{\beta j} x_{\gamma k}x_{\delta l}
+\end{align}
+
+\[
+\sum_{\nu=1}^m\sum_{\eta=1}^m\mathbf{E}(\ul{n}_\nu \ul{n}_\eta) x_{\nu i}x_{\nu j}x_{\eta k}x_{\eta l}=\sum_{\nu=1}^m\sum_{\eta=1}^m(n^{(2)}\pi_\nu\pi_\eta+n\delta^{\nu\eta}\pi_\nu)x_{\nu i}x_{\nu j}x_{\eta k}x_{\eta l}=n^{(2)}\mu_{ij}\mu_{kl}+n\mu_{ijkl}
+\] For the second term of \ldots{} we need \begin{align}
+\mathbf{E}(\ul{n}_\nu\ul{n}_\gamma\ul{n}_\delta)&=
+n^{(3)}\pi_\nu\pi_\gamma\pi_\delta+\delta^{\nu\gamma\delta}(3n^{(2)}\pi_\nu^2+n\pi_\nu)\\
+&+\delta^{\nu\gamma}(1-\delta^{\nu\delta})(1-\delta^{\gamma\delta})n^{(2)}\pi_\nu\pi_\delta\\&+\delta^{\gamma\delta}(1-\delta^{\nu\delta})(1-\delta^{\nu\gamma})n^{(2)}\pi_\nu\pi_\gamma\\&+\delta^{\nu\delta}(1-\delta^{\nu\gamma})(1-\delta^{\gamma\delta})n^{(2)}\pi_\gamma\pi_\delta
+\end{align}
+
+\[
+n^{(3)}\mu_{ij}\mu_k\mu_l+3n^{(2)}\sum_{\nu=1}^m\pi_\nu^2x_{\nu i}x_{\nu j}x_{\nu k}x_{\nu l}+n\mu_{ijkl}
+\] \[
+\delta^{\nu\gamma}(1-\delta^{\nu\delta})(1-\delta^{\gamma\delta})=\delta^{\nu\gamma}-\delta^{\nu\gamma\delta}\]
+\[
+n^{(2)}\sum_{\nu=1}^m\sum_{\gamma=1}^m\sum_{\delta=1}^m(\delta^{\nu\gamma}-\delta^{\nu\gamma\delta})\pi_\nu\pi_\delta x_{\nu i}x_{\nu j}x_{\gamma k}x_{\delta l}=n^{(2)}\{\mu_{ijk}\mu_l-\sum_{\nu=1}^m\pi_\nu^2x_{\nu i}x_{\nu j}x_{\nu k}x_{\nu l}\}
+\] \[
+n^{(2)}\sum_{\nu=1}^m\sum_{\gamma=1}^m\sum_{\delta=1}^m(\delta^{\gamma\delta}-\delta^{\nu\gamma\delta})\pi_\nu\pi_\gamma x_{\nu i}x_{\nu j}x_{\gamma k}x_{\delta l}=n^{(2)}\{\mu_{ij}\mu_{kl}-\sum_{\nu=1}^m\pi_\nu^2x_{\nu i}x_{\nu j}x_{\nu k}x_{\nu l}\}
+\] \[
+n^{(2)}\sum_{\nu=1}^m\sum_{\gamma=1}^m\sum_{\delta=1}^m(\delta^{\nu\delta}-\delta^{\nu\gamma\delta})\pi_\gamma\pi_\delta x_{\nu i}x_{\nu j}x_{\gamma k}x_{\delta l}=n^{(2)}\{\mu_{ijl}\mu_k-\sum_{\nu=1}^m\pi_\nu^2x_{\nu i}x_{\nu j}x_{\nu k}x_{\nu l}\}
 \]
 
-which implies \[
-\ul{r}_{ij}=\rho_{ij}+n^{-\frac12}\rho_{ij}\left\{\frac{\ul{z}_{ij}}{\sigma_{ij}}-\frac12\frac{\ul{z}_{ii}}{\sigma_{ii}}-\frac12\frac{\ul{z}_{jj}}{\sigma_{jj}}\right\}+o_p(n^{-\frac12}).
-\] Multiplying \ldots{} for \(\ul{r}_{ij}\) and \(\ul{r}_{kl}\) and
-simplifying gives \begin{multline}
+\subsection{Asymptotics}\label{asymptotics}
+
+From the result of the previous section \[
+\text{COV}(\ul{c}_{ij},\ul{c}_{kl})=n^{-1}(\sigma_{ijkl}-\sigma_{ij}\sigma_{kl})+o(n^{-1})
+\] We now apply .. to computing the covariance of correlations, defined
+as \[
+\ul{r}_{ij}=\ul{c}_{ij}^{\ }\ul{c}_{ii}^{-\frac12}\ul{c}_{jj}^{-\frac12}
+\] If we define \[
+\ul{z}_{ij}:=n^\frac12(\ul{c}_{ij}-\sigma_{ij})
+\] we have \[
+\ul{r}_{ij}=(\sigma_{ij}+n^{-\frac12}\ul{z}_{ij})(\sigma_{ii}+n^{-\frac12}\ul{z}_{ii})^{-\frac12}(\sigma_{jj}+n^{-\frac12}\ul{z}_{jj})^{-\frac12},
+\] which implies \begin{equation}
+\ul{r}_{ij}=\rho_{ij}+n^{-\frac12}\rho_{ij}\left\{\frac{\ul{z}_{ij}}{\sigma_{ij}}-\frac12\frac{\ul{z}_{ii}}{\sigma_{ii}}-\frac12\frac{\ul{z}_{jj}}{\sigma_{jj}}\right\}+o_p(n^{-\frac12}).\label{eq-rexp}
+\end{equation} Multiplying \eqref{eq-rexp} for \(\ul{r}_{ij}\) and
+\(\ul{r}_{kl}\), and simplifying gives \begin{multline}
 n\text{COV}(\ul{r}_{ij},\ul{r}_{kl})=
 \rho_{ij}\rho_{kl}\left\{\frac{\sigma_{ijkl}}{\sigma_{ij}\sigma_{kl}}
 -\frac12\left(\frac{\sigma_{ijkk}}{\sigma_{ij}\sigma_{kk}}
@@ -453,6 +524,44 @@ n\text{COV}(\ul{r}_{ij},\ul{r}_{kl})=\rho_{ijkl}&-\frac12\rho_{kl}(\rho_{ijkk}+\
 years by successive generations of statisticians (Isserlis
 (\citeproc{ref-isserlis_16}{1916}), Hsu (\citeproc{ref-hsu_49}{1949}),
 Steiger and Hakstian (\citeproc{ref-steiger_hakstian_82}{1982})).
+
+\[
+\begin{bmatrix}
+\frac{\partial \rho_{ij}}{\partial \sigma_{ij}}\\
+\frac{\partial \rho_{ij}}{\partial \sigma_{ii}}\\
+\frac{\partial \rho_{ij}}{\partial \sigma_{jj}}
+\end{bmatrix}=
+\begin{bmatrix}
+\sigma_{ii}^{-\frac12}\sigma_{jj}^{-\frac12}\\
+-\frac12 \sigma_{ij}\sigma_{ii}^{-\frac32}\sigma_{jj}^{-\frac12}\\
+-\frac12 \sigma_{ij}\sigma_{ii}^{-\frac12}\sigma_{jj}^{-\frac32}
+\end{bmatrix}
+\] \[
+\begin{bmatrix}
+\frac{\partial^2\rho_{ij}}{\partial \sigma_{ij}\partial \sigma_{ij}}&\frac{\partial^2\rho_{ij}}{\partial \sigma_{ij}\partial \sigma_{ii}}&\frac{\partial^2\rho_{ij}}{\partial \sigma_{ij}\partial \sigma_{jj}}\\
+\frac{\partial^2\rho_{ij}}{\partial \sigma_{ii}\partial \sigma_{ij}}&\frac{\partial^2\rho_{ij}}{\partial \sigma_{ii}\partial \sigma_{ii}}&\frac{\partial^2\rho_{ij}}{\partial \sigma_{ii}\partial \sigma_{jj}}\\
+\frac{\partial^2\rho_{ij}}{\partial \sigma_{jj}\partial \sigma_{ij}}&\frac{\partial^2\rho_{ij}}{\partial \sigma_{jj}\partial \sigma_{ii}}&\frac{\partial^2\rho_{ij}}{\partial \sigma_{jj}\partial \sigma_{jj}}
+\end{bmatrix}=
+\begin{bmatrix}
+0&-\frac12\sigma_{ii}^{-\frac32}\sigma_{jj}^{-\frac12}&-\frac12\sigma_{ii}^{-\frac12}\sigma_{jj}^{-\frac32}\\
+-\frac12\sigma_{ii}^{-\frac32}\sigma_{jj}^{-\frac12}&\frac34\sigma_{ij}\sigma_{ii}^{-\frac52}\sigma_{jj}^{-\frac12}&
+\frac14\sigma_{ij}\sigma_{ii}^{-\frac32}\sigma_{jj}^{-\frac32}\\
+-\frac12\sigma_{ii}^{-\frac12}\sigma_{jj}^{-\frac32}&\frac14\sigma_{ij}\sigma_{ii}^{-\frac32}\sigma_{jj}^{-\frac32}&\frac34\sigma_{ij}\sigma_{ii}^{-\frac12}\sigma_{jj}^{-\frac52}
+\end{bmatrix}
+\] \[
+\begin{bmatrix}
+\sigma_{iijj}-\sigma_{ij}\sigma_{ij}&\sigma_{iiij}-\sigma_{ij}\sigma_{ii}&\sigma_{ijjj}-\sigma_{ij}\sigma_{jj}\\
+\sigma_{iiij}-\sigma_{ii}\sigma_{ij}&\sigma_{iiii}-\sigma_{ii}\sigma_{ii}&\sigma_{iijj}-\sigma_{ii}\sigma_{jj}\\
+\sigma_{ijjj}-\sigma_{jj}\sigma_{ij}&\sigma_{iijj}-\sigma_{jj}\sigma_{ii}&\sigma_{jjjj}-\sigma_{jj}\sigma_{jj}
+\end{bmatrix}
+\] \[
+n(\mathbf{E}(\ul{r}_{ij})-\rho_{ij})=
+-\sigma_{ii}^{-\frac32}\sigma_{jj}^{-\frac12}(\sigma_{iiij}-\sigma_{ij}\sigma_{ii})
+-\sigma_{ii}^{-\frac12}\sigma_{jj}^{-\frac32}(\sigma_{ijjj}-\sigma_{jj}\sigma_{ij})\\
++\frac12\sigma_{ij}\sigma_{ii}^{-\frac32}\sigma_{jj}^{-\frac32}(\sigma_{iijj}-\sigma_{jj}\sigma_{ii})
++\frac34\sigma_{ij}\sigma_{ii}^{-\frac52}\sigma_{jj}^{-\frac12}(\sigma_{iiii}-\sigma_{ii}\sigma_{ii})
++\frac34\sigma_{ij}\sigma_{ii}^{-\frac12}\sigma_{jj}^{-\frac52}(\sigma_{jjjj}-\sigma_{jj}\sigma_{jj})
+\]
 
 \sectionbreak
 
@@ -498,8 +607,19 @@ Regression.''} \emph{Biometrika} 11 (3): 185--90.
 Mann, H. B., and A. Wald. 1943. {``{On Stochastic Limit and Order
 Relationships}.''} \emph{Annals of Mathematical Statistics} 14: 217--26.
 
+\bibitem[\citeproctext]{ref-newcomer_neerchal_morel_08}
+Newcomer, J. T., N. K. Neerchal, and J. G. Morel. 2008. {``Computation
+of Higher Order Moments from Two Multinomial Overdispersion Likelihood
+Models.''}
+\url{https://www.semanticscholar.org/paper/Computation-of-Higher-Order-Moments-from-Two-Models-Ewcomer/91d6e0b024b63239e85a12e11052e0d5717487e4}.
+
+\bibitem[\citeproctext]{ref-ouimet_20}
+Ouimet, F. 2020. {``Explicit Formulas for the Joint Third and Fourth
+Central Moments of the Multinomial Distribution.''}
+\url{https://arxiv.org/pdf/2006.09059}.
+
 \bibitem[\citeproctext]{ref-ouimet_21}
-Ouimet, F. 2021. {``General Formulas for the Central and Non-Central
+---------. 2021. {``General Formulas for the Central and Non-Central
 Moments of the Multinomial Distribution.''} \emph{Stats} 4: 18--27.
 
 \bibitem[\citeproctext]{ref-steiger_hakstian_82}
