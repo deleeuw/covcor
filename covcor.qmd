@@ -38,10 +38,11 @@ papersize: letter
 graphics: true
 link-citations: true
 mainfont: Times New Roman
-abstract: We derive the classical formula for the first and second order moments of covariance 
-  using discrete variable calculations. In addition the equally classical first order
-  asymptotics for covariances and correlations is discussed. And finally we derive an
-  exact expression for the covariances of covariances.
+abstract: We derive an exact formula for the covariance of two sample covariances 
+  using discrete variable calculations. From that expression we derive large sample
+  approximations of the covariance of two sample covariances and the covariance of
+  two sample correlations, i.e. of the dispersion matrix of the asymptotic normal
+  distribution of the covariances or correlations. 
 ---
 
 ```{r loadpackages, echo = FALSE}
@@ -54,7 +55,7 @@ suppressPackageStartupMessages(library(tinytex, quietly = TRUE))
 # Note {-}
 
 This is a working manuscript which will be expanded/updated
-frequently. All suggestions for improvement are welcome. All Rmd, tex,
+frequently. All suggestions for improvement are welcome. All qmd, tex,
 html, pdf, R, and C files are in the public domain. Attribution will be
 appreciated, but is not required. The files can be found at
 <https://github.com/deleeuw/covcor> 
@@ -66,114 +67,117 @@ appreciated, but is not required. The files can be found at
 * The symbol $:=$ is used for definitions.
 * A sequence $x_n$ is $o(n^{-r})$ if $n^rx_n$ converges to zero.
 * A sequence $\ul{x}_n$ of random variables is $o_p(n^{-r})$ if $n^r\ul{x}_n$ converges to zero in probability (@mann_wald_43).
+* The Kronecker delta $\delta^{i_1\cdots i_r}$ is one if all superscripts are equal, and zero otherwise.
+* If $\ul{x}$ is a random vector, then the raw moment $\mu_{i_1\cdots i_r}$ is the expected value of the product $\ul{x}_{i_1}\times\cdots\times\ul{x}_{i_r}$. In the same way, the central moment
+$\sigma_{i_1\cdots i_r}$ is the expected value of the product  $(\ul{x}_{i_1}-\mu_{i_1})\times\cdots\times(\ul{x}_{i_r}-\mu_{i_r})$.
+* If $f$ is a real valued function on $\mathbb{R}^n$, differentiable in a neighborhood of $x=(x_1,\cdots,x_n)$, then $\mathcal{D}_if(x)$ is the partial derivative of $f$ with respect to the $i$-th argument at $x$. Higher order derivatives are $\mathcal{D}_{ij}f(x)$, etc.
 
 \sectionbreak
 
 # Data
 
-In this paper the data are $n$ observations on $m$ discrete numerical variables. Variable
-$j$ has $k_j$ *categories* (or *levels*). Thus there are $K:=\smash{\prod_{j=1}^m}k_j$
-possible *profiles*.
+In this paper the data are $n$ observations on $m$ discrete numerical variables. Thus the
+data can be represented by a numerical matrix $X$ with $n$ rows and $m$ columns. In 
+R parlance $X$ is a data frame (@r_core_team_24). In this paper we prefer a different representation.
 
-Suppose we have $p$ real vectors $x_1,\cdots,x_p$ of length $m$, which we call *profiles*. Profiles are the possible outcomes of a measurement of $m$ variables, and in our framework the number of profiles is finite.
+Say variable $i$ has $v_i$ *categories* or *levels*. Thus there are $M:=\smash{\prod_{i=1}^m}v_i$ *profiles* or *cells*, which are the possible outcomes of a measurement of the $m$ variables. The $n$ observations produce a vector $N:=(n_1,\cdots,n_M)$ with *profile frequencies*, whose elements add up to $n$. 
+The data is now coded as a vector of length $M$ with the profile frequencies (see 
+@gifi_B_90, Chapter 2). In any reasonable data set the number of profiles $M$ will be much larger than the number of observations $n$, and consequently many of the
+profile frequencies $n_\alpha$ will be zero.
 
-Define a random vector $\ul{e}$, which takes as its values the $p$ unit vectors $e_1,\cdots,e_p$. Unit vector $e_r$ has all its elements equal to zero, except for element $r$, which is equal to one. Define $\pi_r:=\text{prob}(\ul{e}=e_r)$ and the random vector
-$$
-\ul{x}=\sum_{r=1}^p\ul{e}_rx_r
-$$
-which takes the value $x_r$ with probability $\pi_r$.
+Our statistical model for these data is that $n$ is a realization of a multinomial random vector $\ul{n}$, where the multinomial has parameters $\pi$ and $n$. Thus $\ul{n}$ is the
+outcome of $n$ independent trials in each of which which we sample profile $\alpha$ with probability $\pi_\alpha$.  
 
-Next define the raw product moments, or product moments about zero, of order $t$ as
-$$
-\mu_{i_1\cdots i_t}:=\sum_{r=1}^p \pi_r\prod_{s=1}^tx_{ri_s},
-$$
-and the centered product moments, or product moments around the mean, by
-
-$$
-\sigma_{i_1\cdots i_t}:=\sum_{r=1}^p \pi_r\prod_{s=1}^t(x_{ri_s}-\mu_{i_s}).
-$$
-Note that some of the subscripts $i_1,\cdots,i_t$ can be equal
-
-Next, suppose we have $n$ independent copies  $\ul{e}_1,\cdots\ul{e}_n$ of $\ul{e}$ . 
-Suppose 
-$$
-\ul{n}=\sum_{\nu=1}^n\ul{e}_\nu\\
-\ul{p}=\frac{1}{n}\ul{n}
-$$
-are the vectors of, respectively, *frequencies* and *proportions* of the profiles. 
-the covariance of variables $i$ and $j$ as
-$$
-\ul{c}_{ij}:=\sum_\nu \ul{p}_\nu x_{\nu i}x_{\nu j}-\sum_\nu \ul{p}_\nu x_{\nu i}\sum_\eta\ul{p}_\eta x_{\eta j}
-$$
-We want to compute the expected value of the covariances $\ul{c}_{ij}$ and the covariance of pairs of
-covariances $\ul{c}_{ij}$ and $\ul{c}_{kl}$. 
+Just to be clear: in the rest of the paper subscripts $1\leq i,j,k,l\leq m$ refer to variables, subscripts $1\leq \alpha,\beta,\gamma,\delta\leq M$ refer to profiles.
 
 \sectionbreak
 
-# Calculations
+# Moments and Product Moments
 
-The covariance is a quadratic function of multinomial frequencies.
+The covariance between variables $i$ and $j$ 
 \begin{equation}
-\ul{c}_{ij}=\frac{1}{n}\sum_{\nu=1}^m\ul{n}_\nu x_{\nu i}x_{\nu j}-\frac{1}{n^2}\sum_{\alpha=1}^m\sum_{\beta=1}^m\ul{n}_\alpha\ul{n}_\beta x_{\alpha i}x_{\beta j}.\label{eq-covfreq}
+\ul{c}_{ij}=\frac{1}{n}\sum_{\gamma=1}^M\ul{n}_\gamma x_{\gamma i}x_{\gamma j}-\frac{1}{n^2}\sum_{\alpha=1}^M\sum_{\beta=1}^M\ul{n}_\alpha\ul{n}_\beta x_{\alpha i}x_{\beta j}.\label{eq-covfreq}
 \end{equation}
-Thus the product of two covariances is a quartic function of multinomial frequencies.
+is a quadratic function of multinomial frequencies. Thus the product of two covariances
+\begin{align}
+\ul{c}_{ij}\ul{c}_{kl}=&\frac{1}{n^2}\sum_{\alpha=1}^m\sum_{\beta=1}^m\ul{n}_\alpha \ul{n}_\beta x_{\alpha i}x_{\alpha j}x_{\beta k}x_{\beta l}\notag\\
+-&\frac{1}{n^3}\sum_{\gamma=1}^m\sum_{\alpha=1}^m\sum_{\beta=1}^m\ul{n}_\alpha \ul{n}_\beta\ul{n}_\gamma\{x_{\alpha k}x_{\beta l}x_{\gamma i}x_{\gamma j}
++x_{\alpha i}x_{\beta j}x_{\gamma k}x_{\gamma l}\}\notag\\
++&\frac{1}{n^4}\sum_{\alpha=1}^m\sum_{\beta=1}^m\sum_{\gamma=1}^m\sum_{\delta=1}^m\ul{n}_\alpha\ul{n}_\beta\ul{n}_\gamma\ul{n}_\delta x_{\alpha i}x_{\beta j} x_{\gamma k}x_{\delta l}\label{eq-prodcov}
+\end{align}
+is a quartic function of multinomial frequencies. 
+
+Our first and main task in this paper is computing the exact value of the expected value of the quartic in equation \eqref{eq-prodcov}. Of course the first order asymptotic approximation of the expected value has been around forever. It is unclear to me if the exact value has been computed before, but the result may very well exist in the labyrinthine literature from around 1900 by Pearson, Sheppard, Isserlis, Edgeworth, and others. The fact that we use discrete
+random variables and frequencies of profiles (or celss) also gives our results a somewhat nineteenth century flavor. To be honest, It also seems to me that the usefulness of the result is rather limited compared with the effort required to derive it.  
 
 ## Multinomial Product Moments
 
-In order to compute expectations we need the moments and product moments of multinomial vectors. They have been computed recently by @newcomer_neerchal_morel_08, @ouimet_20, and @ouimet_21. @newcomer_neerchal_morel_08 give the raw moments up to order four, @ouimet_20 gives raw and central moments up to order four, and @ouimet_21 gives raw and central moments up to order eight. We shall derive slightly different, but equivalent, expressions, using Kronecker deltas and emphasizing the symmetry of the moments. Our basic tool is the moment generating function of the multinomial distribution and its partial derivatives. We give some of the intermediate calculations, not just
-the final results.
+In order to compute expectations of covariances and their products we need the moments and product moments of multinomial vectors. They have been computed by @mosimann_62, @newcomer_neerchal_morel_08, and more recently by @ouimet_20, and @ouimet_21. @mosimann_62 gives a general formula for the factorial moments, @newcomer_neerchal_morel_08 give the raw moments up to order four, @ouimet_20 gives raw and central moments up to order four, and @ouimet_21 gives raw and central moments up to order eight. We shall derive slightly different, but equivalent, expressions, using Kronecker deltas throughout. Our basic tool is the moment generating function of the multinomial distribution and its partial derivatives. We include some of the intermediate calculations, not just the final results.
 
-The moment generating function of the multinomial distribution is
+The moment generating function of the multinomial distribution with parameters $\pi$ and $n$ is
 \begin{equation}
-M(t)=\left[\sum_{\nu=1}^m\pi_\nu\exp(t_\nu)\right]^n,\label{eq-mgf}
+M(t)=\left[\sum_{\alpha=1}^M\pi_\alpha\exp(t_\alpha)\right]^n,\label{eq-mgf}
 \end{equation}
-It is convenient to define, for $k=0,2,\cdots,n$,
+The raw moments of the multinomial distribution are the partial derivatives of $M(t)$ at $t=0$, i.e.
+\begin{equation}
+\mathbf{E}(\ul{n}_{\alpha_1}\cdots\ul{n}_{\alpha_r})=\mathcal{D}_{\alpha_1\cdots\alpha_r} M(0).\label{eq-m1}
+\end{equation}
+This strongly suggests to use software for symbolic differentation, such as Mathematica, Maple, or Maxima, but what I have readily available does not handle an arbitrary number of variables, in our case an arbitrary number of profiles.
+
+It is convenient to define, for $k=0,2,\cdots,n$, the *falling factorials*
 \begin{equation}
 n^{(k)}:=\frac{n!}{(n-k)!}=n(n-1)\cdots(n-k+1).\label{eq-nk}
 \end{equation}
-Note $n^{(0)}=1$, $n^{(1)}=n$ and $n^{(n)}=n!$. We will also use the shorthand
-$$
-\tau_\nu(t):=\pi_\nu\exp(t_\nu),
-$$
+Note $n^{(0)}=1$, $n^{(1)}=n$ and $n^{(n)}=n!$. 
+We will also use the shorthand
+\begin{equation}
+\tau_\alpha(t):=\pi_\alpha\exp(t_\alpha),\label{taudef}
+\end{equation}
 and 
 \begin{equation}
-S(t):=\sum_{\nu=1}^m\tau_\nu(t)).\label{eq-ds}
+S(t):=\sum_{\alpha=1}^m\tau_\alpha(t).\label{eq-ds}
 \end{equation}
-Note that $S(0)=1$ and $\tau_\nu(0)=\pi_\nu$. Also $\mathcal{D}_\eta\tau_\nu(t)=\delta^{\nu\eta}\tau_\nu(t)$ and $\mathcal{D}_\nu S(t)=\tau_\nu(t)$.
+Note that $S(0)=1$ and $\tau_\alpha(0)=\pi_\alpha$. Also $\mathcal{D}_\beta\tau_\alpha(t)=\delta^{\alpha\beta}\tau_\alpha(t)$ and $\mathcal{D}_\alpha S(t)=\tau_\alpha(t)$.
+We also frequently use some simple properties of Kronecker deltas, such as
+$\smash{\delta^{\alpha\beta}\delta^{\alpha\gamma}=\delta^{\alpha\beta\gamma}}$ and
+$\smash{\delta^{\alpha\beta}x_\alpha=\delta^{\alpha\beta}x_\beta}$.
 
 ### First Order Moments
 
-The first derivative is 
+The derivative of the moment generating function with respect to
+$t_\alpha$ is 
 \begin{equation}
 \mathcal{D}_\alpha M(t)=nS(t)^{n-1}\tau_\alpha(t),\label{eq-d1}
 \end{equation}
-and thus $\mathbf{E}(\ul{n}_\alpha)=\mathcal{D}_\alpha M(0)=n\pi_\alpha$. 
-
+and thus 
+\begin{equation}
+\mathbf{E}(\ul{n}_\alpha)=\mathcal{D}_\alpha M(0)=n\pi_\alpha.\label{eq-enaa}
+\end{equation}
 
 ### Second Order Moments
 
-The second derivative is
+Differentiating \eqref{eq-d1} with respect to $\tau_\beta$ gives
 \begin{equation}
-\mathcal{D}_{\alpha\beta}M(t)=n^{(2)}S(t)^{n-2}\tau_\alpha(t)\tau_\beta(t)+nS(t)^{n-1}\delta^{\alpha\beta}\tau_\alpha(t),\label{eq-d2}
+\mathcal{D}_{\alpha\beta}M(t)=n^{(2)}S(t)^{n-2}\tau_\alpha(t)\tau_\beta(t)+nS(t)^{n-1}\delta^{\alpha\beta}\tau_\beta(t),\label{eq-d2}
 \end{equation}
 and thus
 \begin{equation}
-\mathbf{E}(\ul{n}_\alpha\ul{n}_\beta)=\mathcal{D}_{\alpha\beta}M(0)=n^{(2)}\pi_\alpha\pi_\beta+n\delta^{\alpha\beta}\pi_\alpha.\label{eq-enab}
+\mathbf{E}(\ul{n}_\alpha\ul{n}_\beta)=\mathcal{D}_{\alpha\beta}M(0)=n^{(2)}\pi_\alpha\pi_\beta+n\delta^{\alpha\beta}\pi_\beta\label{eq-enab}
 \end{equation}
 
 ### Third Order Moments
 
-Moments of order three are next. Differentiate \eqref{eq-d2} with repect to $t_\gamma$ to get
+Differenting \eqref{eq-d2} with respect to $t_\gamma$ gives
 \begin{subequations}
 \begin{align}
 \mathcal{D}_{\alpha\beta\gamma}M(t)&=n^{(3)}S(t)^{n-3}\tau_\alpha(t)\tau_\beta(t)\tau_\gamma(t)\label{eq-d3a}\\
-&+n^{(2)}S(t)^{n-2}\{\delta^{\alpha\gamma}\tau_\beta(t)\tau_\gamma(t)+\delta^{\beta\gamma}\tau_\alpha(t)\tau_\gamma(t)+\delta^{\alpha\beta}\tau_\alpha(t)\tau_\gamma(t)\}\label{eq-d3b}\\
+&+n^{(2)}S(t)^{n-2}\{\delta^{\alpha\gamma}\tau_\beta(t)\tau_\gamma(t)+\delta^{\beta\gamma}\tau_\alpha(t)\tau_\gamma(t)+\delta^{\alpha\beta}\tau_\beta(t)\tau_\gamma(t)\}\label{eq-d3b}\\
 &+nS(t)^{n-1}\delta^{\alpha\beta\gamma}\tau_\gamma(t)\label{eq-d3c}.
 \end{align}
 \end{subequations}  
 Thus
 \begin{equation}
-\mathbf{E}(\ul{n}_\alpha\ul{n}_\beta\ul{n}_\gamma)=\\n^{(3)}\pi_\alpha\pi_\beta\pi_\gamma+n^{(2)}\{\delta^{\alpha\gamma}\pi_\beta\pi_\gamma+\delta^{\beta\gamma}\pi_\alpha\pi_\gamma+\delta^{\alpha\beta}\pi_\alpha\pi_\gamma\}+n\delta^{\alpha\beta\gamma}\pi_\gamma.\label{eq-enabg}
+\mathbf{E}(\ul{n}_\alpha\ul{n}_\beta\ul{n}_\gamma)=\\n^{(3)}\pi_\alpha\pi_\beta\pi_\gamma+n^{(2)}\{\delta^{\alpha\gamma}\pi_\beta\pi_\gamma+\delta^{\beta\gamma}\pi_\alpha\pi_\gamma+\delta^{\alpha\beta}\pi_\beta\pi_\gamma\}+n\delta^{\alpha\beta\gamma}\pi_\gamma.\label{eq-enabg}
 \end{equation}
 
 We check \eqref{eq-enabg} against the formulas given by @newcomer_neerchal_morel_08. If $\alpha, \beta, \gamma$ are all different, we have $\delta^{\alpha\gamma}=\delta^{\beta\gamma}=\delta^{\alpha\beta}=\delta^{\alpha\beta\gamma}=0$ and thus \eqref{eq-enabg} reduces to
@@ -194,7 +198,7 @@ And \eqref{eq-newc31}-\eqref{eq-newc33} are indeed the formulas given by @newcom
 
 ### Fourth Order Moments
 
-We will compute the fourth partials in steps. Differentiating \eqref{eq-d3a} gives
+We will compute the fourth partials in steps. Differentiating \eqref{eq-d3a} with respect to $\tau_\delta$ gives
 \begin{multline}
 n^{(4)}S(t)^{n-4}\tau_\alpha(t)\tau_\beta(t)\tau_\gamma(t)\tau_\delta(t)\\
 +n^{(3)}S(t)^{n-3}\left\{\delta^{\gamma\delta}\tau_\alpha(t)\tau_\beta(t)\tau_\delta(t)+\delta^{\beta\delta}\tau_\alpha(t)\tau_\gamma(t)\tau_\delta(t)+\delta^{\alpha\delta}\tau_\beta(t)\tau_\gamma(t)\tau_\delta(t)\right\}.
@@ -203,58 +207,102 @@ For $t=0$ this is
 \begin{equation}
 n^{(4)}\pi_\alpha\pi_\beta\pi_\gamma\pi_\delta+n^{(3)}\{\delta^{\gamma\delta}\pi_\alpha\pi_\beta\pi_\delta+\delta^{\beta\delta}\pi_\alpha\pi_\gamma\pi_\delta+\delta^{\alpha\delta}\pi_\beta\pi_\gamma\pi_\delta\}.\label{eq-d4a}
 \end{equation}
+
 Differentiating \eqref{eq-d3b} gives
 \begin{multline}
-n^{(3)}S(t)^{n-3}\tau_\delta(t)\{\delta^{\alpha\gamma}\tau_\beta(t)\tau_\gamma(t)+\delta^{\beta\gamma}\tau_\alpha(t)\tau_\gamma(t)+\delta^{\alpha\beta}\tau_\alpha(t)\tau_\gamma(t)\}\\
+n^{(3)}S(t)^{n-3}\{\delta^{\alpha\gamma}\tau_\beta(t)\tau_\gamma(t)\tau_\delta(t)+\delta^{\beta\gamma}\tau_\alpha(t)\tau_\gamma(t)\tau_\delta(t)+\delta^{\alpha\beta}\tau_\alpha(t)\tau_\gamma(t)\tau_\delta(t)\}\\
 +n^{(2)}S(t)^{n-2}\{
-\delta^{\alpha\gamma}\delta^{\gamma\delta}\tau_\beta(t)\tau_\gamma(t)+
-\delta^{\alpha\gamma}\delta^{\beta\delta}\tau_\beta(t)\tau_\gamma(t)+
-\delta^{\beta\gamma}\delta^{\alpha\delta}\tau_\alpha(t)\tau_\gamma(t)+\\
-\delta^{\beta\gamma}\delta^{\gamma\delta}\tau_\alpha(t)\tau_\gamma(t)+
-\delta^{\alpha\beta}\delta^{\alpha\delta}\tau_\alpha(t)\tau_\gamma(t)+
-\delta^{\alpha\beta}\delta^{\gamma\delta}\tau_\alpha(t)\tau_\gamma(t)\}.
+\delta^{\alpha\gamma}\delta^{\gamma\delta}\tau_\beta(t)\tau_\delta(t)+
+\delta^{\alpha\gamma}\delta^{\beta\delta}\tau_\gamma(t)\tau_\delta(t)+
+\delta^{\beta\gamma}\delta^{\alpha\delta}\tau_\gamma(t)\tau_\delta(t)+\\
+\delta^{\beta\gamma}\delta^{\gamma\delta}\tau_\alpha(t)\tau_\delta(t)+
+\delta^{\alpha\beta}\delta^{\beta\delta}\tau_\gamma(t)\tau_\delta(t)+
+\delta^{\alpha\beta}\delta^{\gamma\delta}\tau_\beta(t)\tau_\delta(t)\}.
 \}
 \end{multline}
 For $t=0$ this is
 \begin{multline}
-n^{(3)}\pi_\delta\{\delta^{\alpha\gamma}\pi_\beta\pi_\gamma+\delta^{\beta\gamma}\pi_\alpha\pi_\gamma+\delta^{\alpha\beta}\pi_\alpha\pi_\gamma\}\\
+n^{(3)}\{\delta^{\alpha\gamma}\pi_\beta\pi_\gamma\pi_\delta+\delta^{\beta\gamma}\pi_\alpha\pi_\gamma\pi_\delta+\delta^{\alpha\beta}\pi_\alpha\pi_\gamma\pi_\delta\}\\
 +n^{(2)}\{
-\delta^{\alpha\gamma}\delta^{\gamma\delta}\pi_\beta\pi_\gamma+
-\delta^{\alpha\gamma}\delta^{\beta\delta}\pi_\beta\pi_\gamma+
-\delta^{\beta\gamma}\delta^{\alpha\delta}\pi_\alpha\pi_\gamma+\\
-\delta^{\beta\gamma}\delta^{\gamma\delta}\pi_\alpha\pi_\gamma+
-\delta^{\alpha\beta}\delta^{\alpha\delta}\pi_\alpha\pi_\gamma+
-\delta^{\alpha\beta}\delta^{\gamma\delta}\pi_\alpha\pi_\gamma\}.
+\delta^{\alpha\gamma\delta}\pi_\beta\pi_\delta+
+\delta^{\alpha\gamma}\delta^{\beta\delta}\pi_\gamma\pi_\delta+
+\delta^{\beta\gamma}\delta^{\alpha\delta}\pi_\gamma\pi_\delta+\\
+\delta^{\beta\gamma\delta}\pi_\alpha\pi_\delta+
+\delta^{\alpha\beta\delta}\pi_\gamma\pi_\delta+
+\delta^{\alpha\beta}\delta^{\gamma\delta}\pi_\beta\pi_\delta\}.\label{eq-d4b}
 \end{multline}
 
 Differentiating \eqref{eq-d3c} gives
 \begin{equation}
-n^{(2)}S(t)^{n-2}\delta^{\alpha\beta\gamma}\tau_\delta(t)+nS(t)^{n-1}\delta^{\alpha\beta\gamma\delta}.\label{eq-d4c}
+n^{(2)}S(t)^{n-2}\delta^{\alpha\beta\gamma}\tau_\gamma(t)\tau_\delta(t)+nS(t)^{n-1}\delta^{\alpha\beta\gamma\delta}\tau_\gamma(t).\label{eq-d4c}
 \end{equation}
 For $t=0$ this is
 \begin{equation}
-n^{(2)}\delta^{\alpha\beta\gamma}\pi_\delta+n\delta^{\alpha\beta\gamma\delta}.\label{eq-d5c}
+n^{(2)}\delta^{\alpha\beta\gamma}\pi_\gamma\pi_\delta+n\delta^{\alpha\beta\gamma\delta}\pi_\gamma.\label{eq-d5c}
 \end{equation}
+
+Now gather the results of \eqref{eq-d4a}, \eqref{eq-d4b}, and \eqref{eq-d5c} to get
+\begin{align}
+\mathbf{E}(\ul{n}_\alpha\ul{n}_\beta\ul{n}_\gamma\ul{n}_\delta)=&n^{(4)}\pi_\alpha\pi_\beta\pi_\gamma\pi_\delta+\\
+&n^{(3)}\{\delta^{\gamma\delta}\pi_\alpha\pi_\beta\pi_\delta+\delta^{\beta\delta}\pi_\alpha\pi_\gamma\pi_\delta+\delta^{\alpha\delta}\pi_\beta\pi_\gamma\pi_\delta+\\
+&\delta^{\alpha\gamma}\pi_\beta\pi_\gamma\pi_\delta+\delta^{\beta\gamma}\pi_\alpha\pi_\gamma\pi_\delta+\delta^{\alpha\beta}\pi_\alpha\pi_\gamma\pi_\delta\}+\\
+&n^{(2)}\{\delta^{\alpha\gamma\delta}\pi_\beta\pi_\gamma+
+\delta^{\alpha\gamma}\delta^{\beta\delta}\pi_\beta\pi_\gamma+
+\delta^{\beta\gamma}\delta^{\alpha\delta}\pi_\alpha\pi_\gamma+\\
+&\delta^{\beta\gamma\delta}\pi_\alpha\pi_\gamma+
+\delta^{\alpha\beta\delta}\pi_\alpha\pi_\gamma+
+\delta^{\alpha\beta}\delta^{\gamma\delta}\pi_\alpha\pi_\gamma+\delta^{\alpha\beta\gamma}\pi_\gamma\pi_\delta\}+\\
+&n\delta^{\alpha\beta\gamma\delta}\pi_\gamma.
+\end{align}
+
+We check this final expression again using @newcomer_neerchal_morel_08.
+\begin{subequations}
+If $\alpha,\beta,\gamma,\delta$ are all singletons (i.e. not equal to each other or to any of the other subscripts) then the Kronecker deltas are all zero and we get
+\begin{equation}
+\mathbf{E}(\ul{n}_\alpha\ul{n}_\beta\ul{n}_\gamma\ul{n}_\delta)=n^{(4)}\pi_\alpha\pi_\beta\pi_\gamma\pi_\delta.
+\end{equation}
+If $\alpha=\beta$ and $\gamma,\delta$ are singletons the only Kronecker delta equal to one is $\delta^{\alpha\beta}$ and we get
+\begin{equation}
+\mathbf{E}(\ul{n}_\alpha^2\ul{n}_\gamma\ul{n}_\delta)=n^{(4)}\pi_\alpha^2\pi_\gamma\pi_\delta+
+n^{(3)}\pi_\alpha\pi_\gamma\pi_\delta
+\end{equation}
+If there are only two different subscripts, with $\alpha=\beta$ and $\gamma=\delta$, then
+only $\delta^{\alpha\beta}$ and $\delta^{\gamma\delta}$ are one. We get
+\begin{equation}
+\mathbf{E}(\ul{n}_\alpha^2\ul{n}_\gamma^2)=n^{(4)}\pi_\alpha^2\pi_\gamma^2+
+n^{(3)}(\pi_\alpha^2\pi_\gamma+\pi_\alpha^2\pi_\gamma)+n^{(2)}\pi_\alpha\pi_\gamma
+\end{equation}
+Again, only two different subscripts, but now $\alpha=\beta=\gamma$ and $\delta$ is a singleton. Thus 
+$\delta^{\alpha\beta}=\delta^{\alpha\gamma}=\delta^{\beta\gamma}=\delta^{\alpha\beta\gamma}=1$ and the other Kronecker deltas are zero. We get
+\begin{equation}
+\mathbf{E}(\ul{n}_\alpha^3\ul{n}_\delta)=n^{(4)}\pi_\alpha^3\pi_\delta+
+3n^{(3)}\pi_\alpha^2\pi_\delta+n^{(2)}\pi_\alpha\pi_\delta
+\end{equation}
+Finally, if $\alpha=\beta=\gamma=\delta$ then all Kronecker deltas are one and we get
+\begin{equation}
+\mathbf{E}(\ul{n}_\alpha^4)=n^{(4)}\pi_\alpha^4+
+6n^{(3)}\pi_\alpha^3+7n^{(2)}\pi_\alpha^2+n\pi_\alpha
+\end{equation}
+\end{subequations}
+These are indeed the same results as in @newcomer_neerchal_morel_08.
 
 ## Covariance of Covariances
 
-Then
+We now switch from computing moments of the multinomial random variable indicating the profile to the random variable that takes the profiles themselves as its values, with the same multinomial probabilities. We will compute the covariance of two covariances, i.e. the expected value of the product of two covariances minus the product of the expected values of the covariances.
+
+From equation \eqref{eq-covfreq} we have
 \begin{equation}
 \mathbf{E}(\ul{c}_{ij})=\frac{1}{n}\sum_{\nu=1}^m\mathbf{E}(\ul{n}_\nu) x_{\nu i}x_{\nu j}-\frac{1}{n^2}\sum_{\alpha=1}^m\sum_{\beta=1}^m\mathbf{E}(\ul{n}_\alpha\ul{n}_\beta) x_{\alpha i}x_{\beta j}.\label{eq-ecov}
 \end{equation}
-Now
-$\mathbf{E}(\ul{n}_\nu)=n\pi_\nu$ and 
-$\mathbf{E}(\ul{n}_\alpha\ul{n}_\beta)=n^{(2)}\pi_\alpha\pi_\beta+n\delta^{\alpha\beta}\pi_\alpha$.
-Thus 
+Using equations \eqref{eq-enaa} and \eqref{eq-enab} we get 
 \begin{equation}
 \mathbf{E}(\ul{c}_{ij})=\frac{n-1}{n}(\mu_{ij}-\mu_i\mu_j)=\frac{n-1}{n}\sigma_{ij}.
 \label{eq-ecov2}
 \end{equation}
+This is, of course, an exact result, not an approximation. It is the well-known result that an unbiased
+estimate of the covariance is the sample covariance, multiplied by $n/(n-1)$.
 
-Next we compute the covariance of covariances. We have
-\begin{equation}
-\ul{c}_{kl}=\frac{1}{n}\sum_{\eta=1}^m\ul{n}_\eta x_{\eta k}x_{\eta l}-\frac{1}{n^2}\sum_{\gamma=1}^m\sum_{\delta=1}^m\ul{n}_\gamma\ul{n}_\delta x_{\gamma k}x_{\delta l}.
-\end{equation}
+Next we compute the covariance of covariances. From equation \eqref{eq-prodcov} we have
 \begin{align}
 \mathbf{E}(\ul{c}_{ij}\ul{c}_{kl})=&\frac{1}{n^2}\sum_{\nu=1}^m\sum_{\eta=1}^m\mathbf{E}(\ul{n}_\nu \ul{n}_\eta) x_{\nu i}x_{\nu j}x_{\eta k}x_{\eta l}\\
 -&\frac{1}{n^3}\sum_{\nu=1}^m\sum_{\gamma=1}^m\sum_{\delta=1}^m\mathbf{E}(\ul{n}_\nu \ul{n}_\gamma\ul{n}_\delta)x_{\nu i}x_{\nu j}x_{\gamma k}x_{\delta l}\\
@@ -262,6 +310,7 @@ Next we compute the covariance of covariances. We have
 +&\frac{1}{n^4}\sum_{\alpha=1}^m\sum_{\beta=1}^m\sum_{\gamma=1}^m\sum_{\delta=1}^m\mathbf{E}(\ul{n}_\alpha\ul{n}_\beta\ul{n}_\alpha\ul{n}_\beta) x_{\alpha i}x_{\beta j} x_{\gamma k}x_{\delta l}
 \end{align}
 
+From here we again proceed in steps. The first term of the right hand side of the equation above is
 $$
 \sum_{\nu=1}^m\sum_{\eta=1}^m\mathbf{E}(\ul{n}_\nu \ul{n}_\eta) x_{\nu i}x_{\nu j}x_{\eta k}x_{\eta l}=\sum_{\nu=1}^m\sum_{\eta=1}^m(n^{(2)}\pi_\nu\pi_\eta+n\delta^{\nu\eta}\pi_\nu)x_{\nu i}x_{\nu j}x_{\eta k}x_{\eta l}=n^{(2)}\mu_{ij}\mu_{kl}+n\mu_{ijkl}
 $$
@@ -381,7 +430,23 @@ $$
 
 # Discussion
 
-Discrete, continuous. Random variables and realizations. @holland_79, @gifi_B_90, @ouimet_21
+Our formulas have been derived in a discrete probability framework, so someone may
+ask about situations in which the data are realizations of continuous random
+variables. But even if they are, or more precisely if they are modeled to be,
+the data themselves are always discrete. Calculations with continuous random 
+variables are a means of approximating more complicated calculations with
+discrete variables. Continuity is always part of the model, and always unobserved. 
+There is no such thing as continuous data (@holland_79, @gifi_B_90).
+
+The formulas we have derived are valid, no matter how we discretize the data.
+Of course the actual values of the moments and product moments will depend on
+the discretization, but the formulas themselves are independent of the
+fineness or crudeness of the discretization. As a limiting case, our
+discretization can be so fine that there is at most one observation
+in each cell. Or, more precisely, observations are in the same cell only if
+they are equal. In that limiting case the realizations $\ul{n}_\alpha$ are
+either zero or one, and the formulas reduce to the more familiar formulas 
+for the case of repeated independent trials.
 
 \sectionbreak
 
