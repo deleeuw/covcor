@@ -177,7 +177,7 @@ Differenting \eqref{eq-d2} with respect to $t_\gamma$ gives
 \end{subequations}  
 Thus
 \begin{equation}
-\mathbf{E}(\ul{n}_\alpha\ul{n}_\beta\ul{n}_\gamma)=\\n^{(3)}\pi_\alpha\pi_\beta\pi_\gamma+n^{(2)}\{\delta^{\alpha\gamma}\pi_\beta\pi_\gamma+\delta^{\beta\gamma}\pi_\alpha\pi_\gamma+\delta^{\alpha\beta}\pi_\beta\pi_\gamma\}+n\delta^{\alpha\beta\gamma}\pi_\gamma.\label{eq-enabg}
+\mathbf{E}(\ul{n}_\alpha\ul{n}_\beta\ul{n}_\gamma)=n^{(3)}\pi_\alpha\pi_\beta\pi_\gamma+n^{(2)}\{\delta^{\alpha\gamma}\pi_\beta\pi_\gamma+\delta^{\beta\gamma}\pi_\alpha\pi_\gamma+\delta^{\alpha\beta}\pi_\beta\pi_\gamma\}+n\delta^{\alpha\beta\gamma}\pi_\gamma.\label{eq-enabg}
 \end{equation}
 
 We check \eqref{eq-enabg} against the formulas given by @newcomer_neerchal_morel_08. If $\alpha, \beta, \gamma$ are all different, we have $\delta^{\alpha\gamma}=\delta^{\beta\gamma}=\delta^{\alpha\beta}=\delta^{\alpha\beta\gamma}=0$ and thus \eqref{eq-enabg} reduces to
@@ -234,26 +234,28 @@ n^{(3)}\{\delta^{\alpha\gamma}\pi_\beta\pi_\gamma\pi_\delta+\delta^{\beta\gamma}
 
 Differentiating \eqref{eq-d3c} gives
 \begin{equation}
-n^{(2)}S(t)^{n-2}\delta^{\alpha\beta\gamma}\tau_\gamma(t)\tau_\delta(t)+nS(t)^{n-1}\delta^{\alpha\beta\gamma\delta}\tau_\gamma(t).\label{eq-d4c}
+n^{(2)}S(t)^{n-2}\delta^{\alpha\beta\gamma}\tau_\gamma(t)\tau_\delta(t)+nS(t)^{n-1}\delta^{\alpha\beta\gamma\delta}\tau_\delta(t).\label{eq-d4c}
 \end{equation}
 For $t=0$ this is
 \begin{equation}
-n^{(2)}\delta^{\alpha\beta\gamma}\pi_\gamma\pi_\delta+n\delta^{\alpha\beta\gamma\delta}\pi_\gamma.\label{eq-d5c}
+n^{(2)}\delta^{\alpha\beta\gamma}\pi_\gamma\pi_\delta+n\delta^{\alpha\beta\gamma\delta}\pi_\delta\label{eq-d5c}
 \end{equation}
 
 Now gather the results of \eqref{eq-d4a}, \eqref{eq-d4b}, and \eqref{eq-d5c} to get
+\begin{subequations}
 \begin{align}
-\mathbf{E}(\ul{n}_\alpha\ul{n}_\beta\ul{n}_\gamma\ul{n}_\delta)=&n^{(4)}\pi_\alpha\pi_\beta\pi_\gamma\pi_\delta+\\
-&n^{(3)}\{\delta^{\gamma\delta}\pi_\alpha\pi_\beta\pi_\delta+\delta^{\beta\delta}\pi_\alpha\pi_\gamma\pi_\delta+\delta^{\alpha\delta}\pi_\beta\pi_\gamma\pi_\delta+\\
-&\delta^{\alpha\gamma}\pi_\beta\pi_\gamma\pi_\delta+\delta^{\beta\gamma}\pi_\alpha\pi_\gamma\pi_\delta+\delta^{\alpha\beta}\pi_\alpha\pi_\gamma\pi_\delta\}+\\
-&n^{(2)}\{\delta^{\alpha\gamma\delta}\pi_\beta\pi_\gamma+
-\delta^{\alpha\gamma}\delta^{\beta\delta}\pi_\beta\pi_\gamma+
-\delta^{\beta\gamma}\delta^{\alpha\delta}\pi_\alpha\pi_\gamma+\\
-&\delta^{\beta\gamma\delta}\pi_\alpha\pi_\gamma+
-\delta^{\alpha\beta\delta}\pi_\alpha\pi_\gamma+
-\delta^{\alpha\beta}\delta^{\gamma\delta}\pi_\alpha\pi_\gamma+\delta^{\alpha\beta\gamma}\pi_\gamma\pi_\delta\}+\\
-&n\delta^{\alpha\beta\gamma\delta}\pi_\gamma.
+\mathbf{E}(\ul{n}_\alpha\ul{n}_\beta\ul{n}_\gamma\ul{n}_\delta)=&n^{(4)}\pi_\alpha\pi_\beta\pi_\gamma\pi_\delta+\label{eq-for1}\\
+&n^{(3)}\{\delta^{\gamma\delta}\pi_\alpha\pi_\beta\pi_\delta+\delta^{\beta\delta}\pi_\alpha\pi_\gamma\pi_\delta+\delta^{\alpha\delta}\pi_\beta\pi_\gamma\pi_\delta+\label{eq-for2}\\
+&\delta^{\alpha\gamma}\pi_\beta\pi_\gamma\pi_\delta+\delta^{\beta\gamma}\pi_\alpha\pi_\gamma\pi_\delta+\delta^{\alpha\beta}\pi_\alpha\pi_\gamma\pi_\delta\}+\label{eq-for3}\\
+&n^{(2)}\{\delta^{\alpha\gamma\delta}\pi_\beta\pi_\delta+
+\delta^{\alpha\gamma}\delta^{\beta\delta}\pi_\gamma\pi_\delta+
+\delta^{\beta\gamma}\delta^{\alpha\delta}\pi_\gamma\pi_\delta+\label{eq-for4}\\
+&\delta^{\beta\gamma\delta}\pi_\alpha\pi_\delta+
+\delta^{\alpha\beta\delta}\pi_\gamma\pi_\delta+
+\delta^{\alpha\beta}\delta^{\gamma\delta}\pi_\beta\pi_\delta+\delta^{\alpha\beta\gamma}\pi_\gamma\pi_\delta\}+\label{eq-for5}\\
+&n\delta^{\alpha\beta\gamma\delta}\pi_\delta\label{eq-for6}
 \end{align}
+\end{subequations}
 
 We check this final expression again using @newcomer_neerchal_morel_08.
 \begin{subequations}
@@ -290,50 +292,130 @@ These are indeed the same results as in @newcomer_neerchal_morel_08.
 
 We now switch from computing moments of the multinomial random variable indicating the profile to the random variable that takes the profiles themselves as its values, with the same multinomial probabilities. We will compute the covariance of two covariances, i.e. the expected value of the product of two covariances minus the product of the expected values of the covariances.
 
-From equation \eqref{eq-covfreq} we have
+The expected value of the covariance is easy. From equation \eqref{eq-covfreq} we have
 \begin{equation}
-\mathbf{E}(\ul{c}_{ij})=\frac{1}{n}\sum_{\nu=1}^m\mathbf{E}(\ul{n}_\nu) x_{\nu i}x_{\nu j}-\frac{1}{n^2}\sum_{\alpha=1}^m\sum_{\beta=1}^m\mathbf{E}(\ul{n}_\alpha\ul{n}_\beta) x_{\alpha i}x_{\beta j}.\label{eq-ecov}
+\mathbf{E}(\ul{c}_{ij})=\frac{1}{n}\sum_{\alpha=1}^M\mathbf{E}(\ul{n}_\alpha) x_{\alpha i}x_{\alpha j}-\frac{1}{n^2}\sum_{\alpha=1}^M\sum_{\beta=1}^M\mathbf{E}(\ul{n}_\alpha\ul{n}_\beta) x_{\alpha i}x_{\beta j}.\label{eq-ecov}
 \end{equation}
 Using equations \eqref{eq-enaa} and \eqref{eq-enab} we get 
 \begin{equation}
 \mathbf{E}(\ul{c}_{ij})=\frac{n-1}{n}(\mu_{ij}-\mu_i\mu_j)=\frac{n-1}{n}\sigma_{ij}.
 \label{eq-ecov2}
 \end{equation}
-This is, of course, an exact result, not an approximation. It is the well-known result that an unbiased
+This is, of course, an exact result, not an approximation. It says that an unbiased
 estimate of the covariance is the sample covariance, multiplied by $n/(n-1)$.
 
-Next we compute the covariance of covariances. From equation \eqref{eq-prodcov} we have
+Next we compute the expected value of the product of two covariances. From equation \eqref{eq-prodcov} we have
+\begin{subequations}
 \begin{align}
-\mathbf{E}(\ul{c}_{ij}\ul{c}_{kl})=&\frac{1}{n^2}\sum_{\nu=1}^m\sum_{\eta=1}^m\mathbf{E}(\ul{n}_\nu \ul{n}_\eta) x_{\nu i}x_{\nu j}x_{\eta k}x_{\eta l}\\
--&\frac{1}{n^3}\sum_{\nu=1}^m\sum_{\gamma=1}^m\sum_{\delta=1}^m\mathbf{E}(\ul{n}_\nu \ul{n}_\gamma\ul{n}_\delta)x_{\nu i}x_{\nu j}x_{\gamma k}x_{\delta l}\\
--&\frac{1}{n^3}\sum_{\eta=1}^m\sum_{\alpha=1}^m\sum_{\beta=1}^m\mathbf{E}(\ul{n}_\eta \ul{n}_\alpha\ul{n}_\beta)x_{\eta k}x_{\eta l}x_{\alpha i}x_{\beta j}\\
-+&\frac{1}{n^4}\sum_{\alpha=1}^m\sum_{\beta=1}^m\sum_{\gamma=1}^m\sum_{\delta=1}^m\mathbf{E}(\ul{n}_\alpha\ul{n}_\beta\ul{n}_\alpha\ul{n}_\beta) x_{\alpha i}x_{\beta j} x_{\gamma k}x_{\delta l}
+\mathbf{E}(\ul{c}_{ij}\ul{c}_{kl})=&\frac{1}{n^2}\sum_{\alpha=1}^M\sum_{\beta=1}^M\mathbf{E}(\ul{n}_\alpha\ul{n}_\beta) x_{\alpha i}x_{\alpha j}x_{\beta k}x_{\beta l}\label{eq-cc1}\\
+-&\frac{1}{n^3}\sum_{\alpha=1}^M\sum_{\beta=1}^M\sum_{\gamma=1}^M\mathbf{E}(\ul{n}_\alpha \ul{n}_\beta\ul{n}_\gamma)\{x_{\alpha i}x_{\alpha j}x_{\beta k}x_{\gamma l}+x_{\alpha k}x_{\alpha l}x_{\beta i}x_{\gamma j}\}\label{eq-cc2}\\
++&\frac{1}{n^4}\sum_{\alpha=1}^M\sum_{\beta=1}^M\sum_{\gamma=1}^M\sum_{\delta=1}^M\mathbf{E}(\ul{n}_\alpha\ul{n}_\beta\ul{n}_\alpha\ul{n}_\beta) x_{\alpha i}x_{\beta j} x_{\gamma k}x_{\delta l}.\label{eq-cc3}
+\end{align}
+\end{subequations}
+We again proceed in steps, evaluating each of the three parts separately. Call the three summations $T_2, T_3$ and $T_4$. 
+For \eqref{eq-cc1}, using equation \eqref{eq-enab},
+\begin{equation}
+T_2:=n^{(2)}\mu_{ij}\mu_{kl}+n\mu_{ijkl}.
+\end{equation}
+For \eqref{eq-cc2} we use equation \eqref{eq-enabg}. Thus
+\begin{align}
+T_3:=&n^{(3)}\{\mu_{ij}\mu_k\mu_l+\mu_{kl}\mu_i\mu_j\}+\\
+&n^{(2)}\{\mu_k\mu_{ijl}+\mu_l\mu_{ijk}+\mu_i\mu_{jkl}+\mu_j\mu_{ikl}+2\mu_{ij}\mu_{kl}\}+\\
+&2n\mu_{ijkl}.
+\end{align}
+For \eqref{eq-cc3} we need equations \eqref{eq-for1}-\eqref{eq-for6}. The result is
+\begin{align}
+T_4:=&n^{(4)}\mu_i\mu_j\mu_k\mu_l+\\
+&n^{(3)}\{\mu_i\mu_j\mu_{kl}+\mu_i\mu_k\mu_{jl}+\mu_i\mu_l\mu_{jk}+\mu_j\mu_l\mu_{ik}+\mu_j\mu_k\mu_{il}+\mu_k\mu_l\mu_{ij}\}+\\
+&n^{(2)}\{\mu_i\mu_{jkl}+\mu_j\mu_{ikl}+\mu_k\mu_{ijl}+\mu_l\mu_{ijk}+\mu_{ij}\mu_{kl}+\mu_{ik}\mu_{jl}+\mu_{il}\mu_{jk}\}+\\
+&n\mu_{ijkl}.
 \end{align}
 
-From here we again proceed in steps. The first term of the right hand side of the equation above is
-$$
-\sum_{\nu=1}^m\sum_{\eta=1}^m\mathbf{E}(\ul{n}_\nu \ul{n}_\eta) x_{\nu i}x_{\nu j}x_{\eta k}x_{\eta l}=\sum_{\nu=1}^m\sum_{\eta=1}^m(n^{(2)}\pi_\nu\pi_\eta+n\delta^{\nu\eta}\pi_\nu)x_{\nu i}x_{\nu j}x_{\eta k}x_{\eta l}=n^{(2)}\mu_{ij}\mu_{kl}+n\mu_{ijkl}
-$$
-For the second term of ... we need
-\begin{align}
-\mathbf{E}(\ul{n}_\nu\ul{n}_\gamma\ul{n}_\delta)&=
-n^{(3)}\pi_\nu\pi_\gamma\pi_\delta+\delta^{\nu\gamma\delta}(3n^{(2)}\pi_\nu^2+n\pi_\nu)\\
-&+\delta^{\nu\gamma}(1-\delta^{\nu\delta})(1-\delta^{\gamma\delta})n^{(2)}\pi_\nu\pi_\delta\\&+\delta^{\gamma\delta}(1-\delta^{\nu\delta})(1-\delta^{\nu\gamma})n^{(2)}\pi_\nu\pi_\gamma\\&+\delta^{\nu\delta}(1-\delta^{\nu\gamma})(1-\delta^{\gamma\delta})n^{(2)}\pi_\gamma\pi_\delta
-\end{align}
+We gave enough information to compute the covariance of covariances from the raw moments up to
+order four. The expected value of the product is
+\begin{equation}
+\mathbf{E}(\ul{c}_{ij}\ul{c}_{kl})=\frac{1}{n^2}T_2-\frac{1}{n^3}T_3+\frac{1}{n^4}T_4,\label{eq-ecovcov}
+\end{equation}
+from which we get the covariance by subtracting $\mathbf{E}(\ul{c}_{ij})\mathbf{E}(\ul{c}_{kl})$
+using equation \eqref{eq-ecov2}. 
 
+If the probabilities $\pi$ are unknown, which will be the case in actual practice, we can use the sample moments and product moments to estimate the covariance of the covariances. This leads to the familiar problem that the estimated covariance of the covariances 
+has a sampling distribution again, with its own bias and variance. Getting a closed form expression for the bias and variance of the estimated covariance of the covariances is a formidable task, and we will not attempt it here.
+
+Note that if we want to compute the covariance of the unbiased estimate of the covariances we simply use the fact that the unbiased estimate is equal to the sample covariance multiplied by $n/(n-1)$, and thus the covariance of two unbiased sample covariances is $n^2/(n-1)^2$ times the covariance of two
+sample covariances.
+
+## Powers of $n$
+
+Our results are in terms of the raw moments and the falling factorials. This is fine as far
+as computing expected values of the covariances and their products is concerned. 
+However, the results are not very transparent. We will reformulate the results in terms of powers of $n$.
+
+We will first group the terms in the expected value of the product of covariances by the different fourth order  raw moments. Use the fact that
+\begin{subequations}
+\begin{align}
+n^{(2)}&=n^2-n,\\
+n^{(3)}&=n^3-3n^2+n,\\
+n^{(4)}&=n^4-6n^3+11n^2-6n.
+\end{align}
+\end{subequations}
+Then we have
+\begin{subequations}
+\begin{align}
+&\frac{n^{(4)}}{n^4}\mu_i\mu_j\mu_k\mu_l=\{1-6n^{-1}+11n^{-2}-6n^{-3}\}\mu_i\mu_j\mu_k\mu_l\\
+&\left\{-\frac{n^{(3)}}{n^3}+\frac{n^{(3)}}{n^4}\right\}\mu_i\mu_j\mu_{kl}=\{-1+4n^{-1}-4n^{-2}+n^{-3}\}\mu_i\mu_j\mu_{kl}\\
+&\frac{n^{(3)}}{n^4}\mu_i\mu_k\mu_{jl}=\{n^{-1}-3n^{-2}+n^{-3}\}\mu_i\mu_k\mu_{jl}\\
+&\frac{n^{(3)}}{n^4}\mu_i\mu_l\mu_{jk}=\{n^{-1}-3n^{-2}+n^{-3}\}\mu_i\mu_l\mu_{jk}\\
+&\frac{n^{(3)}}{n^4}\mu_j\mu_l\mu_{ik}=\{n^{-1}-3n^{-2}+n^{-3}\}\mu_j\mu_l\mu_{ik}\\
+&\frac{n^{(3)}}{n^4}\mu_j\mu_k\mu_{il}=\{n^{-1}-3n^{-2}+n^{-3}\}\mu_j\mu_k\mu_{il}\\
+&\left\{-\frac{n^{(3)}}{n^3}+\frac{n^{(3)}}{n^4}\right\}\mu_k\mu_l\mu_{ij}=\{-1+4n^{-1}-4n^{-2}+n^{-3}\}\mu_k\mu_l\mu_{ij}\\
+&\left\{-\frac{n^{(2)}}{n^3}+\frac{n^{(2)}}{n^4}\right\}\mu_i\mu_{jkl}=\{-n^{-1}+2n^{-2}-n^{-3}\}\mu_i\mu_{jkl}\\
+&\left\{-\frac{n^{(2)}}{n^3}+\frac{n^{(2)}}{n^4}\right\}\mu_j\mu_{ikl}=\{-n^{-1}+2n^{-2}-n^{-3}\}\mu_j\mu_{ikl}\\
+&\left\{-\frac{n^{(2)}}{n^3}+\frac{n^{(2)}}{n^4}\right\}\mu_k\mu_{ijl}=\{-n^{-1}+2n^{-2}-n^{-3}\}\mu_k\mu_{ijl}\\
+&\left\{-\frac{n^{(2)}}{n^3}+\frac{n^{(2)}}{n^4}\right\}\mu_l\mu_{ijk}=\{-n^{-1}+2n^{-2}-n^{-3}\}\mu_l\mu_{ijk}\\
+&\left\{\frac{n^{(2)}}{n^2}-2\frac{n^{(2)}}{n^3}+\frac{n^{(2)}}{n^4}\right\}\mu_{ij}\mu_{kl}=\{1-3n^{-1}+3n^{-2}-n^{-3}\}\mu_{ij}\mu_{kl}\\
+&\frac{n^{(2)}}{n^4}\mu_{ik}\mu_{jl}=\{n^{-2}-n^{-3}\}\mu_{ik}\mu_{jl}\\
+&\frac{n^{(2)}}{n^4}\mu_{il}\mu_{jk}=\{n^{-2}-n^{-3}\}\mu_{il}\mu_{jk}\\
+&\left\{\frac{n}{n^2}-2\frac{n}{n^3}+\frac{n}{n^4}\right\}\mu_{ijkl}=\{n^{-1}-2n^{-2}+n^{-3}\}\mu_{ijkl}.
+\end{align}
+\end{subequations}
+Now collect terms with equal powers of $n$. Define $V_0, V_1, V_2, V_3$ and $V_4$ as the tertms of order
+zero, one, two, three and four in $n$ respectively. 
 $$
-n^{(3)}\mu_{ij}\mu_k\mu_l+3n^{(2)}\sum_{\nu=1}^m\pi_\nu^2x_{\nu i}x_{\nu j}x_{\nu k}x_{\nu l}+n\mu_{ijkl}
+V_0:=\mu_{ijkl}-\mu_i\mu_j\mu_{kl}-\mu_k\mu_l\mu_{ij}+\mu_{ij}\mu_{kl}.
 $$
 $$
-\delta^{\nu\gamma}(1-\delta^{\nu\delta})(1-\delta^{\gamma\delta})=\delta^{\nu\gamma}-\delta^{\nu\gamma\delta}$$
-$$
-n^{(2)}\sum_{\nu=1}^m\sum_{\gamma=1}^m\sum_{\delta=1}^m(\delta^{\nu\gamma}-\delta^{\nu\gamma\delta})\pi_\nu\pi_\delta x_{\nu i}x_{\nu j}x_{\gamma k}x_{\delta l}=n^{(2)}\{\mu_{ijk}\mu_l-\sum_{\nu=1}^m\pi_\nu^2x_{\nu i}x_{\nu j}x_{\nu k}x_{\nu l}\}
+V_1:=-6\mu_i\mu_j\mu_k\mu_l+4\mu_i\mu_j\mu_{kl}+4\mu_k\mu_l\mu_{ij}-\mu_i\mu_{jkl}-\mu_j\mu_{ikl}-\mu_k\mu_{ijl}-\mu_l\mu_{ijk}-3\mu_{ij}\mu_{kl}.
 $$
 $$
-n^{(2)}\sum_{\nu=1}^m\sum_{\gamma=1}^m\sum_{\delta=1}^m(\delta^{\gamma\delta}-\delta^{\nu\gamma\delta})\pi_\nu\pi_\gamma x_{\nu i}x_{\nu j}x_{\gamma k}x_{\delta l}=n^{(2)}\{\mu_{ij}\mu_{kl}-\sum_{\nu=1}^m\pi_\nu^2x_{\nu i}x_{\nu j}x_{\nu k}x_{\nu l}\}
+V_2:=11\mu_i\mu_j\mu_k\mu_l-4\mu_i\mu_j\mu_{kl}-4\mu_k\mu_l\mu_{ij}-3
+$$
+Also
+\begin{multline}
+\mathbf{E}(\ul{c}_{ij})\mathbf{E}(\ul{c}_{kl})=\frac{(n^{(2)})^2}{n^4}\{\mu_{ij}\mu_{kl}-\mu_i\mu_j\mu_{kl}
+-\mu_k\mu_l\mu_{ij}+\mu_i\mu_j\mu_k\mu_l\}=\\\{1-2n^{-1}+n^{-2}\}\{\mu_{ij}\mu_{kl}-\mu_i\mu_j\mu_{kl}
+-\mu_k\mu_l\mu_{ij}+\mu_i\mu_j\mu_k\mu_l\}
+\end{multline}
+Thus
+$$
+\tilde V_0=\{\mu_{ijkl}-\mu_i\mu_j\mu_{kl}-\mu_k\mu_l\mu_{ij}+\mu_{ij}\mu_{kl}\}-\{\mu_{ij}\mu_{kl}-\mu_i\mu_j\mu_{kl}
+-\mu_k\mu_l\mu_{ij}+\mu_i\mu_j\mu_k\mu_l\}=\mu_{ijkl}-\mu_i\mu_j\mu_k\mu_l
+$$
+
+## Central Moments
+
+Use $x_{\alpha i}=\mu_i+(x_{\alpha i}-\mu_i)$. Thus
+$$
+\mu_{ij}=\mu_i\mu_j+\sigma_{ij}.
 $$
 $$
-n^{(2)}\sum_{\nu=1}^m\sum_{\gamma=1}^m\sum_{\delta=1}^m(\delta^{\nu\delta}-\delta^{\nu\gamma\delta})\pi_\gamma\pi_\delta x_{\nu i}x_{\nu j}x_{\gamma k}x_{\delta l}=n^{(2)}\{\mu_{ijl}\mu_k-\sum_{\nu=1}^m\pi_\nu^2x_{\nu i}x_{\nu j}x_{\nu k}x_{\nu l}\}
+\mu_{ijk}=\mu_i\mu_j\mu_k+\sigma_{ijk}+\sigma_{ij}\mu_k+\sigma_{ik}\mu_j+\sigma_{jk}\mu_i.
+$$
+$$
+\sigma_{ijk}=\mu_{ijk}+2\mu_i\mu_j\mu_k-\mu_{ij}\mu_k
+-\mu_{ik}\mu_j-\mu_{jk}\mu_i
+$$
+\mu_{ijkl}=\mu_i\mu_j\mu_k\mu_l+\sigma_{ijkl}+\sigma_{ij}\mu_k\mu_l+\sigma_{ik}\mu_j\mu_l+\sigma_{il}\mu_j\mu_k+\sigma_{jk}\mu_i\mu_l+\sigma_{jl}\mu_i\mu_k+\sigma_{kl}\mu_i\mu_j.
 $$
 
 
