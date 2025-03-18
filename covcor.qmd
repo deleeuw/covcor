@@ -39,10 +39,13 @@ graphics: true
 link-citations: true
 mainfont: Times New Roman
 abstract: We derive an exact formula for the covariance of two sample covariances 
-  using discrete variable calculations. From that expression we derive large sample
+  using discrete variable calculations. This requires expressions for multinomial
+  moments and product moments up to order four, which we give together with
+  software in R to compute them. From the expression we derive large sample
   approximations of the covariance of two sample covariances and the covariance of
   two sample correlations, i.e. of the dispersion matrix of the asymptotic normal
-  distribution of the covariances or correlations. 
+  distribution of the covariances or the correlations. Again R software is included
+  to performn the relevant computations.
 ---
 
 ```{r loadpackages, echo = FALSE}
@@ -108,7 +111,7 @@ is a quadratic function of multinomial frequencies. Thus the product of two cova
 is a quartic function of multinomial frequencies. 
 
 Our first and main task in this paper is computing the exact value of the expected value of the quartic in equation \eqref{eq-prodcov}. Of course the first order asymptotic approximation of the expected value has been around forever. It is unclear to me if the exact value has been computed before, but the result may very well exist in the labyrinthine literature from around 1900 by Pearson, Sheppard, Isserlis, Edgeworth, and others. The fact that we use discrete
-random variables and frequencies of profiles (or celss) also gives our results a somewhat nineteenth century flavor. To be honest, It also seems to me that the usefulness of the result is rather limited compared with the effort required to derive it.  
+random variables and frequencies of profiles (or celss) also gives our results a somewhat nineteenth century flavor. To be perfectly honest, it also seems to me that the usefulness of the exact result is rather limited compared with the effort required to derive it.  
 
 ## Multinomial Product Moments
 
@@ -415,12 +418,13 @@ $$
 \sigma_{ijk}=\mu_{ijk}+2\mu_i\mu_j\mu_k-\mu_{ij}\mu_k
 -\mu_{ik}\mu_j-\mu_{jk}\mu_i
 $$
+$$
 \mu_{ijkl}=\mu_i\mu_j\mu_k\mu_l+\sigma_{ijkl}+\sigma_{ij}\mu_k\mu_l+\sigma_{ik}\mu_j\mu_l+\sigma_{il}\mu_j\mu_k+\sigma_{jk}\mu_i\mu_l+\sigma_{jl}\mu_i\mu_k+\sigma_{kl}\mu_i\mu_j.
 $$
 
 
 
-## Asymptotics
+## Correlations
 
 From the result of the previous section
 $$
@@ -465,20 +469,26 @@ Equation \eqref{eq-covr} becomes
 n\text{COV}(\ul{r}_{ij},\ul{r}_{kl})=\rho_{ijkl}&-\frac12\rho_{kl}(\rho_{ijkk}+\rho_{ijll})-\frac12
 \rho_{ij}(\rho_{iikl}+\rho_{jjkl})\notag\\&+\frac14\rho_{ij}\rho_{kl}(\rho_{iikk}+\rho_{iill}+\rho_{jjkk}+\rho_{jjll}).\label{eq-ihsh}
 \end{align}
-Equation \eqref{eq-ihsh} has been rediscovered every 33 years by successive generations of statisticians (@isserlis_16, @hsu_49, @steiger_hakstian_82).
+Equation \eqref{eq-ihsh} has been rediscovered every 33 years by successive generations of statisticians (@isserlis_16, equation 23, @hsu_49, equation 79,  @steiger_hakstian_82, equation 3.4). There are some unsurprising problems with typos and some problems with accreditation. Hsu does not mention Isserlis, and Steiger/Hakstian in their 1982
+paper do not mention either Isserlis or Hsu. In the historical note @steiger_hakstian_83 they do point out that their equation 3.4
+is also in Hsu, except for a typo in Hsu's subscripts. Around the same time as the Steiger/Hakstian paper our equation
+\eqref{eq-ihsh} is also given in @deleeuw_A_83a, equation 2, with a reference to Hsu, but without mentioning Isserlis.
 
+Besides the asymptotic covariance of two correlation coefficients we can also derive a fomula for the bias of single 
+correlation coefficient, up to order $n^{-1}$. We need the  second partial derivatives of the correlation coefficient with respect to the covariances. The first partials are
 $$
 \begin{bmatrix}
 \frac{\partial \rho_{ij}}{\partial \sigma_{ij}}\\
 \frac{\partial \rho_{ij}}{\partial \sigma_{ii}}\\
 \frac{\partial \rho_{ij}}{\partial \sigma_{jj}}
-\end{bmatrix}=
+\end{bmatrix}
 \begin{bmatrix}
 \sigma_{ii}^{-\frac12}\sigma_{jj}^{-\frac12}\\
 -\frac12 \sigma_{ij}\sigma_{ii}^{-\frac32}\sigma_{jj}^{-\frac12}\\
 -\frac12 \sigma_{ij}\sigma_{ii}^{-\frac12}\sigma_{jj}^{-\frac32}
-\end{bmatrix}
+\end{bmatrix},
 $$
+and thus the second partials are
 $$
 \begin{bmatrix}
 \frac{\partial^2\rho_{ij}}{\partial \sigma_{ij}\partial \sigma_{ij}}&\frac{\partial^2\rho_{ij}}{\partial \sigma_{ij}\partial \sigma_{ii}}&\frac{\partial^2\rho_{ij}}{\partial \sigma_{ij}\partial \sigma_{jj}}\\
@@ -492,6 +502,7 @@ $$
 -\frac12\sigma_{ii}^{-\frac12}\sigma_{jj}^{-\frac32}&\frac14\sigma_{ij}\sigma_{ii}^{-\frac32}\sigma_{jj}^{-\frac32}&\frac34\sigma_{ij}\sigma_{ii}^{-\frac12}\sigma_{jj}^{-\frac52}
 \end{bmatrix}
 $$
+Combiner this with the asymptotic dispersion matrix of the covariances
 $$
 \begin{bmatrix}
 \sigma_{iijj}-\sigma_{ij}\sigma_{ij}&\sigma_{iiij}-\sigma_{ij}\sigma_{ii}&\sigma_{ijjj}-\sigma_{ij}\sigma_{jj}\\
@@ -499,6 +510,7 @@ $$
 \sigma_{ijjj}-\sigma_{jj}\sigma_{ij}&\sigma_{iijj}-\sigma_{jj}\sigma_{ii}&\sigma_{jjjj}-\sigma_{jj}\sigma_{jj}
 \end{bmatrix}
 $$
+to obtain
 $$
 n(\mathbf{E}(\ul{r}_{ij})-\rho_{ij})=
 -\sigma_{ii}^{-\frac32}\sigma_{jj}^{-\frac12}(\sigma_{iiij}-\sigma_{ij}\sigma_{ii})
